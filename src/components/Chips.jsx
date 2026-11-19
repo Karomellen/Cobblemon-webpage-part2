@@ -6,7 +6,7 @@ export default function Chips({ label, options, value, onChange }) {
       {options.map((o) => (
         <button
           key={o.id}
-          className={`chip pixel${value === o.id ? ' active' : ''}`}
+          className={`chip${value === o.id ? ' active' : ''}`}
           aria-pressed={value === o.id}
           onClick={() => onChange(o.id)}
         >

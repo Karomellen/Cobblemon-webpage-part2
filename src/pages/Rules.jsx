@@ -1,24 +1,27 @@
+import Panel from '../components/Panel.jsx'
 import { categories, consequences } from '../data/rules.json'
 
 const PRIORITIES = [
-  { id: 'high', label: 'HIGH PRIORITY', color: 'var(--orange)' },
-  { id: 'medium', label: 'MEDIUM PRIORITY', color: 'var(--lavender)' },
-  { id: 'low', label: 'LOW PRIORITY', color: 'var(--lime)' },
+  { id: 'high', label: 'HIGH PRIORITY', color: 'var(--red)', text: '#fff', sprite: 'pikachu' },
+  { id: 'medium', label: 'MEDIUM PRIORITY', color: 'var(--orange)', sprite: 'rowlet' },
+  { id: 'low', label: 'LOW PRIORITY', color: 'var(--blue-soft)', sprite: 'mudkip' },
 ]
 
 export default function Rules() {
   return (
     <>
-      <h1>Rules</h1>
+      <Panel tone="yellow" sprite="oshawott" count={2} className="page-head">
+        <h1>Rules</h1>
+      </Panel>
 
       {PRIORITIES.map((p) => (
-        <section key={p.id}>
+        <Panel key={p.id} sprite={p.sprite}>
           <h2 className="group-head">
-            <span className="tag pixel" style={{ background: p.color }}>{p.label}</span>
+            <span className="tag" style={{ background: p.color, color: p.text }}>{p.label}</span>
           </h2>
           {categories.map((c, index) =>
             c.priority !== p.id ? null : (
-              <article key={c.title} className="card pixel">
+              <article key={c.title} className="card">
                 <h3>{index + 1}. {c.title}</h3>
                 <ul>
                   {c.rules.map((rule) => (
@@ -28,14 +31,14 @@ export default function Rules() {
               </article>
             ),
           )}
-        </section>
+        </Panel>
       ))}
 
-      <section>
+      <Panel tone="yellow" sprite="furret" count={3}>
         <h2 className="group-head">
-          <span className="tag pixel" style={{ background: 'var(--peach)' }}>IF RULES ARE BROKEN</span>
+          <span className="tag" style={{ background: 'var(--brown)', color: 'var(--yellow)' }}>IF RULES ARE BROKEN</span>
         </h2>
-        <article className="card pixel">
+        <article className="card">
           <h3>Consequences for breaking the rules</h3>
           <ul>
             {consequences.map((c) => (
@@ -43,7 +46,7 @@ export default function Rules() {
             ))}
           </ul>
         </article>
-      </section>
+      </Panel>
     </>
   )
 }

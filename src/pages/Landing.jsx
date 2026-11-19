@@ -1,54 +1,129 @@
+import { useState } from 'react'
+import { AnimatePresence, motion } from 'motion/react'
 import { Link } from 'react-router-dom'
+import Panel from '../components/Panel.jsx'
 import ProfileCards from '../components/ProfileCards.jsx'
 import { SERVER_NAME, SERVER_PART } from '../config.js'
 
-const EXPLORE = [
-  { to: '/announcements', title: 'Announcements', text: 'Events and modpack changelogs, most important first.' },
-  { to: '/archive', title: 'Archive', text: 'Expired hub newspapers, newest first.' },
-  { to: '/rules', title: 'Rules', text: 'What to follow, sorted by priority.' },
-  { to: '/support', title: 'Support', text: 'Discord contacts and common questions.' },
+// Part 1 key moments, shown as a timeline. `label` appears big in the background.
+const MOMENTS = [
+  { label: 'ACT 1', text: '[KEY MOMENT 1]' },
+  { label: 'ACT 2', text: '[KEY MOMENT 2]' },
+  { label: 'ACT 3', text: '[KEY MOMENT 3]' },
 ]
+const SEGMENTS = 24
+
+const EXPLORE = [
+  { to: '/announcements', title: 'Announcements', text: 'Events and modpack changelogs, most important first.', sprite: 'pikachu' },
+  { to: '/archive', title: 'Archive', text: 'Expired hub newspapers, newest first.', sprite: 'furret' },
+  { to: '/rules', title: 'Rules', text: 'What to follow, sorted by priority.', sprite: 'rowlet' },
+  { to: '/support', title: 'Support', text: 'Discord contacts and common questions.', sprite: 'mudkip' },
+]
+
+function Recap() {
+  const [step, setStep] = useState(0)
+  const filled = Math.round(((step + 1) / MOMENTS.length) * SEGMENTS)
+  const go = (d) => setStep((s) => (s + d + MOMENTS.length) % MOMENTS.length)
+
+  return (
+    <>
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={step}
+          className="ghost"
+          aria-hidden="true"
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 1.1 }}
+          transition={{ duration: 0.25 }}
+        >
+          {MOMENTS[step].label}
+        </motion.div>
+      </AnimatePresence>
+
+      <h2>Part 1 recap</h2>
+      <p>[2-3 sentences recapping Minecraft SMP part 1 and what carries over into part 2.]</p>
+      <div className="recap-body">
+        <button className="round-btn" onClick={() => go(-1)} aria-label="Previous moment">◀</button>
+        <motion.p key={step} className="quote" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}>
+          {MOMENTS[step].text}
+        </motion.p>
+        <button className="round-btn" onClick={() => go(1)} aria-label="Next moment">▶</button>
+      </div>
+
+      <div className="progress" aria-hidden="true">
+        {Array.from({ length: SEGMENTS }, (_, i) => (
+          <span key={i} className={i < filled ? 'on' : ''} />
+        ))}
+      </div>
+      <div className="steps">
+        {MOMENTS.map((m, i) => (
+          <button key={m.label} className={i === step ? 'active' : ''} onClick={() => setStep(i)} aria-pressed={i === step}>
+            {m.label}
+          </button>
+        ))}
+      </div>
+    </>
+  )
+}
 
 export default function Landing() {
   return (
     <>
-      <section className="card pixel hero">
-        <h1>
-          {SERVER_NAME} <em>{SERVER_PART}</em>
-        </h1>
-        <p>[SHORT SERVER INTRO: what the server is, who it is for, what is new in part 2.]</p>
-        <div className="row">
-          <Link to="/rules" className="btn pixel primary">Read the rules</Link>
-          <Link to="/announcements" className="btn pixel">Announcements</Link>
+      <Panel sprite="mudkip" count={3} className="hero">
+        <div className="hero-screen">
+          <h1 className="mega">
+            <span>{SERVER_NAME}</span>
+            <span>{SERVER_PART}</span>
+          </h1>
+          <motion.img
+            className="hero-pika"
+            src="/images/sprites/pikachu.png"
+            alt=""
+            animate={{ y: [0, -14, 0] }}
+            transition={{ duration: 1.6, repeat: Infinity, ease: 'easeInOut' }}
+          />
+          <motion.img
+            className="hero-rowlet"
+            src="/images/sprites/rowlet.png"
+            alt=""
+            animate={{ rotate: [-6, 6, -6] }}
+            transition={{ duration: 2.4, repeat: Infinity, ease: 'easeInOut' }}
+          />
         </div>
-      </section>
+        <p className="lead">[SHORT SERVER INTRO: what the server is, who it is for, what is new in part 2.]</p>
+        <div className="row">
+          <Link to="/rules" className="btn primary">Read the rules</Link>
+          <Link to="/announcements" className="btn">Announcements</Link>
+        </div>
+      </Panel>
 
-      <section className="card pixel">
-        <h2>Part 1 recap</h2>
-        <p>[2-3 sentences recapping Minecraft SMP part 1 and what carries over into part 2.]</p>
-        <ul>
-          <li>[KEY MOMENT 1]</li>
-          <li>[KEY MOMENT 2]</li>
-          <li>[KEY MOMENT 3]</li>
-        </ul>
-      </section>
+      <Panel tone="yellow" sprite="furret" count={3} className="recap">
+        <Recap />
+      </Panel>
 
-      <section>
-        <h2 className="section-title">Explore</h2>
-        <div className="grid">
+      <Panel sprite="rowlet" className="explore-panel">
+        <h2 className="title-lg">Explore</h2>
+        <div className="inset grid">
           {EXPLORE.map((e) => (
-            <Link key={e.to} to={e.to} className="card pixel explore">
-              <h3>{e.title}</h3>
-              <p>{e.text}</p>
-            </Link>
+            <motion.div key={e.to} whileHover={{ y: -6 }} whileTap={{ scale: 0.97 }}>
+              <Link to={e.to} className="card explore">
+                <img src={`/images/sprites/${e.sprite}.png`} alt="" />
+                <h3>{e.title}</h3>
+                <p>{e.text}</p>
+              </Link>
+            </motion.div>
           ))}
         </div>
-      </section>
+      </Panel>
 
-      <section>
-        <h2 className="section-title">Need help?</h2>
+      <Panel sprite="oshawott" count={2} className="team">
+        <div className="team-head">
+          <p className="kicker">Behind every server, there are people</p>
+          <h2 className="title-lg">Need help?</h2>
+        </div>
         <ProfileCards />
-      </section>
+      </Panel>
     </>
   )
 }

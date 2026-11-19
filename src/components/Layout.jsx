@@ -1,4 +1,6 @@
+import { MotionConfig } from 'motion/react'
 import { Link, NavLink, Outlet } from 'react-router-dom'
+import Hearts from './Hearts.jsx'
 import StatusBar from './StatusBar.jsx'
 import { SERVER_NAME, SERVER_PART, STATUS_ENABLED } from '../config.js'
 
@@ -12,40 +14,36 @@ const NAV = [
 
 export default function Layout() {
   return (
-    <>
-      {STATUS_ENABLED && <StatusBar />}
+    // reducedMotion="user": Motion animations switch off for people who ask their system for less motion.
+    <MotionConfig reducedMotion="user">
+      <div className="site">
+        {STATUS_ENABLED && <StatusBar />}
 
-      <div className="scene">
-        <header className="header">
-          <Link to="/home" className="brand pixel">
-            <img src="/images/oshawott.png" alt="" />
-            <span>
-              {SERVER_NAME} <em>{SERVER_PART}</em>
-            </span>
+        {/* Arcade-style HUD bar: hearts + name, navigation, part number */}
+        <header className="hud">
+          <Link to="/home" className="hud-brand">
+            <Hearts />
+            <span>{SERVER_NAME}</span>
           </Link>
-          <nav className="nav" aria-label="Main">
+          <nav className="hud-nav" aria-label="Main">
             {NAV.map(({ to, label }) => (
-              <NavLink key={to} to={to} className={({ isActive }) => `chip pixel${isActive ? ' active' : ''}`}>
+              <NavLink key={to} to={to} className={({ isActive }) => `hud-link${isActive ? ' active' : ''}`}>
                 {label}
               </NavLink>
             ))}
           </nav>
+          <span className="hud-part">{SERVER_PART}</span>
         </header>
-        <img className="mascot" src="/images/oshawott.png" alt="" />
-      </div>
 
-      <main className="container">
-        <Outlet />
-      </main>
+        <main className="stage">
+          <Outlet />
+        </main>
 
-      <footer className="footer">
-        <div className="footer-body">
+        <footer className="footer">
           <p>Fan-made server. Not an official Minecraft, Pokémon or Cobblemon product.</p>
-          <Link to="/">
-            Replay intro
-          </Link>
-        </div>
-      </footer>
-    </>
+          <Link to="/" className="btn">Replay intro</Link>
+        </footer>
+      </div>
+    </MotionConfig>
   )
 }

@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import Chips from '../components/Chips.jsx'
+import Panel from '../components/Panel.jsx'
 import issues from '../data/archive.json'
 
 const SORTS = [
@@ -16,23 +17,27 @@ export default function Archive() {
 
   return (
     <>
-      <h1>Newspaper archive</h1>
-      <p>Expired hub newspapers from the server.</p>
-      <Chips label="Sort:" options={SORTS} value={order} onChange={setOrder} />
+      <Panel tone="yellow" sprite="furret" className="page-head">
+        <h1>Newspaper archive</h1>
+        <p>Expired hub newspapers from the server.</p>
+        <Chips label="Sort:" options={SORTS} value={order} onChange={setOrder} />
+      </Panel>
 
-      <div className="grid grid-archive">
-        {sorted.map((i) => (
-          <article key={i.id} className="card pixel">
-            {i.image ? (
-              <img className="newspaper" src={`/images/archive/${i.image}`} alt={i.title} />
-            ) : (
-              <div className="newspaper placeholder">NEWSPAPER IMAGE</div>
-            )}
-            <h3>{i.title}</h3>
-            <p className="muted">{i.date}</p>
-          </article>
-        ))}
-      </div>
+      <Panel sprite="mudkip" count={3}>
+        <div className="inset grid grid-archive">
+          {sorted.map((i) => (
+            <article key={i.id} className="card">
+              {i.image ? (
+                <img className="newspaper" src={`/images/archive/${i.image}`} alt={i.title} />
+              ) : (
+                <div className="newspaper placeholder">NEWSPAPER IMAGE</div>
+              )}
+              <h3>{i.title}</h3>
+              <p className="muted">{i.date}</p>
+            </article>
+          ))}
+        </div>
+      </Panel>
     </>
   )
 }

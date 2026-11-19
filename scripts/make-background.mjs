@@ -144,14 +144,21 @@ gradientRows(HORIZON, SEA_END, [
   [HORIZON + 5, C.sea],
   [SEA_END, C.seaDeep],
 ])
-// Sun glint: a pale shimmer in the middle of the sea, dithered at the edges.
+// Sun glint: a wide, flat oval of light on the water that fades out with dithering,
+// plus a few short sparkle streaks around it.
 const glintX = W * 0.62
-for (let y = HORIZON + 2; y < SEA_END - 2; y++) {
-  const half = 46 - (y - HORIZON) * 3
-  for (let x = Math.floor(glintX - half); x <= glintX + half; x++) {
-    const t = 1 - Math.abs(x - glintX) / half
-    if ((y + x) % 2 === 0 ? t > 0.35 : t > 0.6) set(x, y, C.glint)
+const glintY = HORIZON + 4
+for (let y = HORIZON + 2; y < SEA_END - 1; y++) {
+  for (let x = Math.floor(glintX - 70); x <= glintX + 70; x++) {
+    const d = Math.hypot((x - glintX) / 64, (y - glintY) / 7) // 0 at center, 1 at the edge
+    if (d < 1 && dither(x, y, (1 - d) * 1.4)) set(x, y, C.glint)
   }
+}
+for (let i = 0; i < 10; i++) {
+  const y = HORIZON + 3 + Math.floor(rand() * (SEA_END - HORIZON - 5))
+  const x = Math.floor(glintX + (rand() - 0.5) * 150)
+  const len = 2 + Math.floor(rand() * 5)
+  for (let k = 0; k < len; k++) set(x + k, y, C.glint)
 }
 
 // ---------- grass ----------

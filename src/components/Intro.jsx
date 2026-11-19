@@ -35,7 +35,7 @@ export default function Intro({ onDone }) {
   return (
     <main className="intro">
       <div className="book">
-        <img src="/images/book.png" alt="" />
+        <img src="/images/minecraft-intro-page.png" alt="" />
         <div className="book-text">
           <p className="book-line1">
             {line1}

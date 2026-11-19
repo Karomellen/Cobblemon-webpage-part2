@@ -1,11 +1,12 @@
 import { useMemo, useState } from 'react'
 import Chips from '../components/Chips.jsx'
+import Panel from '../components/Panel.jsx'
 import posts from '../data/announcements.json'
 
 const PRIORITIES = [
-  { id: 'critical', label: 'CRITICAL', color: 'var(--orange)' },
-  { id: 'moderate', label: 'MODERATE', color: 'var(--lavender)' },
-  { id: 'nice', label: 'NICE TO KNOW', color: 'var(--lime)' },
+  { id: 'critical', label: 'CRITICAL', color: 'var(--red)', text: '#fff', sprite: 'pikachu' },
+  { id: 'moderate', label: 'MODERATE', color: 'var(--orange)', sprite: 'mudkip' },
+  { id: 'nice', label: 'NICE TO KNOW', color: 'var(--blue-soft)', sprite: 'furret' },
 ]
 
 const FILTERS = [
@@ -33,26 +34,28 @@ export default function Announcements() {
 
   return (
     <>
-      <h1>Announcements</h1>
-      <Chips label="Show:" options={FILTERS} value={filter} onChange={setFilter} />
+      <Panel tone="yellow" sprite="rowlet" className="page-head">
+        <h1>Announcements</h1>
+        <Chips label="Show:" options={FILTERS} value={filter} onChange={setFilter} />
+      </Panel>
 
       {groups.map((g) => (
-        <section key={g.id}>
+        <Panel key={g.id} sprite={g.sprite} count={3}>
           <h2 className="group-head">
-            <span className="tag pixel" style={{ background: g.color }}>{g.label}</span>
+            <span className="tag" style={{ background: g.color, color: g.text }}>{g.label}</span>
           </h2>
           {g.items.map((a) => (
-            <article key={a.id} className="card pixel">
+            <article key={a.id} className="card">
               <div className="card-top">
-                <span className="tag pixel small">{TYPE_LABEL[a.type]}</span>
-                <span>{a.date}</span>
+                <span className="tag small">{TYPE_LABEL[a.type]}</span>
+                <span className="muted">{a.date}</span>
               </div>
               <h3>{a.title}</h3>
               <p>{a.body}</p>
               <p className="muted">By {a.author}</p>
             </article>
           ))}
-        </section>
+        </Panel>
       ))}
     </>
   )
