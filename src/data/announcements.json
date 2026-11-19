@@ -1,0 +1,29 @@
+[
+  {
+    "id": "a1",
+    "title": "[MODPACK VERSION]: update required before joining",
+    "type": "changelog",
+    "priority": "critical",
+    "date": "2026-11-19",
+    "author": "Bambooskies",
+    "body": "[Why this update matters and what players must do.]"
+  },
+  {
+    "id": "a2",
+    "title": "[EVENT NAME]",
+    "type": "event",
+    "priority": "moderate",
+    "date": "2026-11-21",
+    "author": "[YOUR NAME]",
+    "body": "[Short description of the event and what players can expect.]"
+  },
+  {
+    "id": "a3",
+    "title": "[MODPACK VERSION]: small tweaks",
+    "type": "changelog",
+    "priority": "nice",
+    "date": "2026-11-12",
+    "author": "[YOUR NAME]",
+    "body": "[Short summary of what changed.]"
+  }
+]

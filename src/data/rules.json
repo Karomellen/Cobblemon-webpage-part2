@@ -1,0 +1,12 @@
+{
+  "categories": [
+    { "title": "Conduct and general gameplay", "priority": "high", "rules": ["[RULE TEXT]"] },
+    { "title": "Griefing", "priority": "high", "rules": ["[RULE TEXT]"] },
+    { "title": "Roleplay", "priority": "high", "rules": ["[RULE TEXT]"] },
+    { "title": "PvP", "priority": "medium", "rules": ["[RULE TEXT]"] },
+    { "title": "Death and resurrection", "priority": "medium", "rules": ["[RULE TEXT]"] },
+    { "title": "Communication", "priority": "medium", "rules": ["[RULE TEXT]"] },
+    { "title": "Admin help", "priority": "low", "rules": ["[RULE TEXT]"] }
+  ],
+  "consequences": ["[CONSEQUENCE TEXT]"]
+}
