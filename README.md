@@ -1,35 +1,35 @@
-# Cobblemon Part 2 site
-
-Vite + React Router (JavaScript) with a small Express server for the online status.
-
+# Cobblemon Part 2 event page
+ 
+Event page for our Cobblemon Part 2 server: intro screen, announcements, newspaper archive, rules, support and live online status.
+ 
+> **Disclaimer**
+> This is a fan-made, non-commercial event page. No profit is made from it.
+> Pokémon and its sprites belong to Nintendo, Creatures Inc., GAME FREAK inc. and The Pokémon Company. Minecraft belongs to Mojang Studios and Microsoft. Cobblemon is made by the Cobblemon team.
+> This page is not affiliated with or endorsed by any of them. The sprites are small decorations only and are not covered by this project's license.
+> If you are a rights holder and want something removed, contact [CONTACT] and it will be taken down.
+ 
 ## Run it
-
+ 
 ```
 npm install
-cp .env.example .env     # fill in MC_HOST
-npm run server           # terminal 1, API on :3001
-npm run dev              # terminal 2, site on :5173
+cp .env.example .env    # set MC_HOST
+npm run server          # status API on :3001
+npm run dev             # site on :5173
 ```
-
-## Where things are
-
-- `src/config.js`: server name, intro text, Discord profiles (each profile's `sprite` picks its card image)
-- `public/images/sprites/`: Pokémon sprites. Sprites that aren't `.png` (e.g. `.webp`) must be listed in `src/sprites.js`.
-  `node scripts/trim-sprites.mjs` regenerates the `.png` sprites from `public/images/<name>.png`; it doesn't touch the `.webp` ones.
-- `src/data/*.json`: announcements, rules, archive, faq (edit these, no code needed)
-- `public/images/archive/`: newspaper images, listed in `src/data/archive.json`
-- `server/index.js`: `/api/status`, the API key stays here and never reaches the browser
-
-## Intro screen
-
-The book intro plays on every page load (including refresh), then continues to the page you opened (`/` goes to `/home`).
-The footer has a "Replay intro" link.
-
+ 
+## Edit content
+ 
+- `src/data/*.json`: announcements, rules, archive, faq
+- `src/config.js`: server name, intro text, Discord profiles
+- `public/images/archive/`: newspaper images, listed in `archive.json`
 ## Deploy
-
-1. `npm run build` creates `dist/`. Host it on any static host (Netlify, Vercel, Cloudflare Pages).
-   `public/_redirects` makes routes like `/rules` work on Netlify. Other hosts need an "all routes to index.html" rewrite.
-2. Run `npm run server` on a small Node host (Render, Railway, Fly.io) and set the `.env` values there.
-3. Set `VITE_API_BASE` to that host's URL before building, and `CLIENT_ORIGIN` on the server to your site's URL.
-
-The status server calls mcstatus.io. Check their docs once to confirm the endpoint and field names still match `server/index.js`.
+ 
+1. `npm run build`, then host `dist/` on any static host (Netlify, Vercel, Cloudflare Pages).
+2. Run `npm run server` on a small Node host and set the `.env` values there.
+3. Set `VITE_API_BASE` to the server URL before building.
+## Credits
+ 
+Pokémon sprites: Nintendo, Creatures Inc., GAME FREAK inc., The Pokémon Company.
+Cobblemon: the Cobblemon team. Minecraft: Mojang Studios and Microsoft.
+Pixelify Sans: Google Fonts (SIL Open Font License).
+ 
