@@ -12,7 +12,6 @@ export default function App() {
   const navigate = useNavigate()
   const { pathname } = useLocation()
 
-  // Kept in memory only, so every page load (refresh) starts with the intro.
   const [introDone, setIntroDone] = useState(false)
 
   if (!introDone) {
@@ -25,7 +24,7 @@ export default function App() {
 
   return (
     <Routes>
-      {/* Reached through the footer's "Replay intro" link */}
+      {}
       <Route path="/" element={<Intro onDone={() => navigate('/home')} />} />
       <Route element={<Layout />}>
         <Route path="/home" element={<Landing />} />

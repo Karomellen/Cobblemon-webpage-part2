@@ -4,7 +4,6 @@ import { spriteSrc } from '../sprites.js'
 
 const SPRITES = ['pikachu', 'rowlet', 'furret', 'mudkip', 'oshawott']
 
-// Discord contacts as orange "character select" cards. Without a url the handle is plain text.
 export default function ProfileCards() {
   return (
     <div className="profiles">

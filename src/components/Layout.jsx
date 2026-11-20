@@ -14,12 +14,12 @@ const NAV = [
 
 export default function Layout() {
   return (
-    // reducedMotion="user": Motion animations switch off for people who ask their system for less motion.
+
     <MotionConfig reducedMotion="user">
       <div className="site">
         {STATUS_ENABLED && <StatusBar />}
 
-        {/* Arcade-style HUD bar: hearts + name, navigation, part number */}
+        {}
         <header className="hud">
           <Link to="/home" className="hud-brand">
             <Hearts />
@@ -40,7 +40,7 @@ export default function Layout() {
         </main>
 
         <footer className="footer">
-          <p>Fan-made server. Not an official Minecraft, Pokémon or Cobblemon product.</p>
+          <p>Fan-made server. Not an official Minecraft, PokÃ©mon or Cobblemon product.</p>
           <Link to="/" className="btn">Replay intro</Link>
         </footer>
       </div>

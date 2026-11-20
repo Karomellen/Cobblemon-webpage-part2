@@ -1,4 +1,4 @@
-// Pixel hearts for the top bar. `full` of `total` are red, the rest are empty.
+
 const SHAPE = ['.##.##.', '#######', '#######', '.#####.', '..###..', '...#...']
 
 function Heart({ full }) {

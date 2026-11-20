@@ -1,8 +1,8 @@
-// Makes tightly cropped copies of the Pokémon sprites (empty transparent border removed),
-// so they can be sized and placed precisely in CSS.
-// Run: node scripts/trim-sprites.mjs
-// Reads public/images/<name>.png, writes public/images/sprites/<name>.png. Originals are untouched.
-// Supports 8-bit RGBA PNGs (what most sprite downloads are).
+
+
+
+
+
 
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { crc32, deflateSync, inflateSync } from 'node:zlib'

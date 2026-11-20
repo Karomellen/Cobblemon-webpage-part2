@@ -3,7 +3,6 @@ import { INTRO } from '../config.js'
 
 const prefersReducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
-// Reveals `text` one letter at a time once `active` is true.
 function useTypewriter(text, active, speed = 70) {
   const [count, setCount] = useState(0)
 
@@ -17,13 +16,11 @@ function useTypewriter(text, active, speed = 70) {
   return [text.slice(0, count), count >= text.length]
 }
 
-// `onDone` runs when the achievement toast finishes.
 export default function Intro({ onDone }) {
-  const [stage, setStage] = useState('ask') // 'ask' -> 'achievement'
+  const [stage, setStage] = useState('ask')
   const [line1, done1] = useTypewriter(INTRO.line1, true)
   const [line2, done2] = useTypewriter(INTRO.line2, done1)
 
-  // With reduced motion the toast has no animation, so end it with a timer.
   useEffect(() => {
     if (stage !== 'achievement' || !prefersReducedMotion()) return
     const id = setTimeout(onDone, 2500)

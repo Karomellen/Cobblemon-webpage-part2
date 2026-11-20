@@ -1,4 +1,4 @@
-// Row of toggle buttons. Used for the announcement filter and the archive sort.
+
 export default function Chips({ label, options, value, onChange }) {
   return (
     <div className="chips">

@@ -6,7 +6,6 @@ import ProfileCards from '../components/ProfileCards.jsx'
 import { SERVER_NAME, SERVER_PART } from '../config.js'
 import { spriteSrc } from '../sprites.js'
 
-// Part 1 key moments, shown as a timeline. `label` appears big in the background.
 const MOMENTS = [
   { label: 'ACT 1', text: '[KEY MOMENT 1]' },
   { label: 'ACT 2', text: '[KEY MOMENT 2]' },
@@ -45,11 +44,11 @@ function Recap() {
       <h2>Part 1 recap</h2>
       <p>[2-3 sentences recapping Minecraft SMP part 1 and what carries over into part 2.]</p>
       <div className="recap-body">
-        <button className="round-btn" onClick={() => go(-1)} aria-label="Previous moment">◀</button>
+        <button className="round-btn" onClick={() => go(-1)} aria-label="Previous moment">â—€</button>
         <motion.p key={step} className="quote" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}>
           {MOMENTS[step].text}
         </motion.p>
-        <button className="round-btn" onClick={() => go(1)} aria-label="Next moment">▶</button>
+        <button className="round-btn" onClick={() => go(1)} aria-label="Next moment">â–¶</button>
       </div>
 
       <div className="progress" aria-hidden="true">

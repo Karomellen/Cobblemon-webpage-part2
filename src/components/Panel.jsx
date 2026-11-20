@@ -1,11 +1,10 @@
 import { motion } from 'motion/react'
 import { spriteSrc } from '../sprites.js'
 
-// One of the big rounded panels the pages are built from.
-// Panels zigzag left/right automatically (see .stage in styles.css).
-//   tone:   'cream' (default) or 'yellow'
-//   sprite: name of a file in /images/sprites/ shown in the empty space beside the panel
-//   count:  how many copies of the sprite to stack (like a little squad)
+
+
+
+
 export default function Panel({ tone = 'cream', sprite, count = 1, className = '', children }) {
   return (
     <motion.section

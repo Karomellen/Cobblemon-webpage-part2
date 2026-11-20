@@ -4,7 +4,7 @@ Event page for our Cobblemon Part 2 server: intro screen, announcements, newspap
  
 > **Disclaimer**
 > This is a fan-made, non-commercial event page. No profit is made from it.
-> Pokémon and its sprites belong to Nintendo, Creatures Inc., GAME FREAK inc. and The Pokémon Company. Minecraft belongs to Mojang Studios and Microsoft. Cobblemon is made by the Cobblemon team.
+> PokÃ©mon and its sprites belong to Nintendo, Creatures Inc., GAME FREAK inc. and The PokÃ©mon Company. Minecraft belongs to Mojang Studios and Microsoft. Cobblemon is made by the Cobblemon team.
 > This page is not affiliated with or endorsed by any of them. The sprites are small decorations only and are not covered by this project's license.
 > If you are a rights holder and want something removed, contact [CONTACT] and it will be taken down.
  
@@ -12,9 +12,9 @@ Event page for our Cobblemon Part 2 server: intro screen, announcements, newspap
  
 ```
 npm install
-cp .env.example .env    # set MC_HOST
-npm run server          # status API on :3001
-npm run dev             # site on :5173
+cp .env.example .env
+npm run server
+npm run dev
 ```
  
 ## Edit content
@@ -29,7 +29,7 @@ npm run dev             # site on :5173
 3. Set `VITE_API_BASE` to the server URL before building.
 ## Credits
  
-Pokémon sprites: Nintendo, Creatures Inc., GAME FREAK inc., The Pokémon Company.
+PokÃ©mon sprites: Nintendo, Creatures Inc., GAME FREAK inc., The PokÃ©mon Company.
 Cobblemon: the Cobblemon team. Minecraft: Mojang Studios and Microsoft.
 Pixelify Sans: Google Fonts (SIL Open Font License).
  

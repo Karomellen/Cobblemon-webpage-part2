@@ -2,8 +2,7 @@ import { useEffect, useState } from 'react'
 
 const API = import.meta.env.VITE_API_BASE ?? ''
 
-// Returns { state: 'loading' | 'online' | 'offline' | 'unknown', players }
-// 'unknown' means the API itself could not be reached.
+
 export function useServerStatus(intervalMs = 60_000) {
   const [status, setStatus] = useState({ state: 'loading' })
 

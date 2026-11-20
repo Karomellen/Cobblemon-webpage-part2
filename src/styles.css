@@ -1,20 +1,20 @@
-/* ---------- Palette and tokens (change colors here only) ---------- */
+
 :root {
-  /* brand palette */
+  
   --cream: #f7f0d2;
   --yellow: #ffc94a;
   --orange: #f59e2b;
   --red: #d63b3b;
-  --brown: #3b2a1a; /* text, borders and shadows */
+  --brown: #3b2a1a; 
 
-  /* shades derived from the palette */
-  --paper: #fffbea; /* card faces */
-  --inset: #efe4bf; /* tinted box inside a panel */
-  --pattern: #ece2bd; /* faint pixel pattern on the page */
+  
+  --paper: #fffbea; 
+  --inset: #efe4bf; 
+  --pattern: #ece2bd; 
   --yellow-light: #ffe08a;
   --yellow-dark: #f0b530;
   --muted: #6e5a45;
-  --blue: #2f8fd8; /* progress bar segments */
+  --blue: #2f8fd8; 
   --blue-soft: #a8d8f5;
 
   --display: 'Silkscreen', 'Press Start 2P', monospace;
@@ -22,25 +22,25 @@
 
   --radius: 14px;
   --line: 3px solid var(--brown);
-  --shadow: 8px 8px 0 var(--brown); /* hard offset, no blur */
+  --shadow: 8px 8px 0 var(--brown); 
   --shadow-sm: 4px 4px 0 var(--brown);
 }
 
-/* ---------- Base ---------- */
+
 * { box-sizing: border-box; }
 
 body {
   margin: 0;
-  font-family: 'Pixelify Sans', monospace; /* used by the intro screen */
+  font-family: 'Pixelify Sans', monospace; 
   color: var(--brown);
-  /* Cream with faint rows of binary, like an old arcade attract screen. */
+  
   background: var(--cream)
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='440' height='120'%3E%3Cg fill='%23ece2bd' font-family='monospace' font-size='34' font-weight='700'%3E%3Ctext x='0' y='42'%3E0100 1101 0010%3C/text%3E%3Ctext x='-110' y='102'%3E1011 0110 1001 0111%3C/text%3E%3C/g%3E%3C/svg%3E");
-  image-rendering: pixelated; /* inherited, keeps every sprite crisp */
+  image-rendering: pixelated; 
   overflow-x: hidden;
 }
 
-/* Everything outside the intro uses the site fonts. */
+
 .site { font-family: var(--body); font-size: 16px; line-height: 1.6; }
 
 .site h1, .site h2, .site h3 { margin: 0; line-height: 1.1; }
@@ -55,7 +55,7 @@ body {
 
 .title-lg { font-size: clamp(34px, 7vw, 76px) !important; line-height: 0.95 !important; letter-spacing: -0.02em; }
 
-/* ---------- Buttons, chips, tags ---------- */
+
 .btn, .chip, .round-btn {
   border: var(--line);
   color: var(--brown);
@@ -125,7 +125,7 @@ body {
 .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 20px; }
 .grid-archive { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
 
-/* ---------- HUD (top bar) ---------- */
+
 .hud {
   position: sticky;
   top: 12px;
@@ -156,9 +156,9 @@ body {
 .hud-part { font-size: 16px; font-weight: 700; letter-spacing: 0.05em; }
 .hud-part::before { content: 'Level: '; color: var(--muted); font-weight: 400; }
 
-/* ---------- Stage: zigzagging panels with sprites in the gaps ---------- */
+
 .stage {
-  --gutter: 0px; /* empty space beside each panel, where the sprites live */
+  --gutter: 0px; 
   display: flex;
   flex-direction: column;
   gap: 52px;
@@ -182,7 +182,7 @@ body {
 .stage > .panel:nth-child(odd) { margin-right: var(--gutter); }
 .stage > .panel:nth-child(even) { margin-left: var(--gutter); }
 
-/* Sprite squad in the empty space beside the panel. */
+
 .gutter {
   position: absolute;
   top: 50%;
@@ -200,18 +200,18 @@ body {
 .gutter img { width: 64px; animation: hover-bob 1.2s steps(2, end) infinite alternate; }
 .gutter img:only-child { width: 92px; }
 @keyframes hover-bob { to { transform: translateY(-8px); } }
-/* mudkip.webp has extra empty space around it, so enlarge it to match the other sprites */
+
 img[src$="mudkip.webp"] { scale: 2; }
 img[src$="raichu.webp"] { scale: 1.5; }
 img[src$="sprigatito.webp"] { scale: 2.1; }
-/* Narrow screens: no side gaps, so one small sprite peeks over the panel's top edge. */
+
 @media (max-width: 999px) {
   .stage > .panel .gutter { top: -46px; right: 20px; left: auto; width: auto; transform: none; }
   .gutter img, .gutter img:only-child { width: 48px; }
   .gutter img + img { display: none; }
 }
 
-/* Yellow panel with chunky pixel blocks along the top and bottom edges. */
+
 .panel-yellow { background: var(--yellow); }
 .panel-yellow::before,
 .panel-yellow::after {
@@ -242,7 +242,7 @@ img[src$="sprigatito.webp"] { scale: 2.1; }
 .card p + p { margin-top: 10px; }
 .card-top { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; margin-bottom: 10px; }
 
-/* ---------- Home ---------- */
+
 .hero-screen {
   position: relative;
   display: grid;
@@ -251,10 +251,10 @@ img[src$="sprigatito.webp"] { scale: 2.1; }
   padding: 32px 16px;
   border: var(--line);
   border-radius: 12px;
-  /* the pixel sky scene, framed so clouds and sea stay in view */
+  
   background: #74c6f5 url('/images/background-hd.png') center 18% / cover;
   overflow: hidden;
-  container-type: inline-size; /* the title is sized to this box, so it always fits */
+  container-type: inline-size; 
 }
 .site .mega {
   position: relative;
@@ -276,7 +276,7 @@ img[src$="sprigatito.webp"] { scale: 2.1; }
 .hero-rowlet { position: absolute; z-index: 2; left: 5%; bottom: 6%; width: clamp(52px, 10vw, 118px); }
 .lead { max-width: 640px; font-size: 18px; }
 
-/* Recap: giant faded label behind, quote box, segmented progress bar */
+
 .recap > *:not(.ghost, .gutter) { position: relative; z-index: 1; }
 .ghost {
   position: absolute;
@@ -310,16 +310,16 @@ img[src$="sprigatito.webp"] { scale: 2.1; }
 .steps { display: flex; justify-content: space-between; gap: 8px; margin-top: -10px; }
 .steps button { padding: 2px 4px; border: 0; background: none; color: var(--muted); font: 700 13px var(--display); cursor: pointer; }
 .steps button.active { color: var(--brown); font-size: 16px; }
-.steps button.active::before { content: '▸ '; }
-.steps button.active::after { content: ' ◂'; }
+.steps button.active::before { content: 'â–¸ '; }
+.steps button.active::after { content: ' â—‚'; }
 
-/* Explore cards */
+
 .explore-panel .grid { grid-template-columns: repeat(2, 1fr); }
 .site .explore { height: 100%; text-decoration: none; transition: background 0.15s; }
 .explore:hover { background: var(--yellow-light); }
 .explore img { display: block; height: 56px; margin-bottom: 12px; }
 
-/* Team / profile cards ("character select") */
+
 .team-head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 16px; }
 .kicker { max-width: 220px; font-family: var(--display); font-size: 15px; text-transform: uppercase; }
 .profiles { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 20px; }
@@ -349,7 +349,7 @@ img[src$="sprigatito.webp"] { scale: 2.1; }
 .role { font-family: var(--display); font-size: 13px; }
 .profile .btn { align-self: center; margin-top: 6px; }
 
-/* ---------- Other pages ---------- */
+
 .page-head p { max-width: 640px; font-size: 18px; }
 
 .newspaper { display: block; width: 100%; aspect-ratio: 3 / 4; margin-bottom: 12px; border: 2px solid var(--brown); border-radius: 8px; object-fit: cover; }
@@ -360,7 +360,7 @@ img[src$="sprigatito.webp"] { scale: 2.1; }
 .faq summary::marker { color: var(--red); }
 .faq p { margin-top: 10px; }
 
-/* ---------- Status bar (shown when STATUS_ENABLED is on) ---------- */
+
 .status-bar {
   display: flex;
   align-items: center;
@@ -377,7 +377,7 @@ img[src$="sprigatito.webp"] { scale: 2.1; }
 .status-dot.offline { background: var(--red); }
 .status-dot.unknown { background: var(--orange); }
 
-/* ---------- Footer ---------- */
+
 .footer {
   position: relative;
   display: flex;
@@ -391,7 +391,7 @@ img[src$="sprigatito.webp"] { scale: 2.1; }
   color: var(--cream);
   font-size: 14px;
 }
-/* pixel steps rising out of the footer */
+
 .footer::before {
   content: '';
   position: absolute;
@@ -404,7 +404,7 @@ img[src$="sprigatito.webp"] { scale: 2.1; }
     linear-gradient(90deg, transparent 0 48px, var(--brown) 48px 64px) 0 100% / 80px 16px repeat-x;
 }
 
-/* ---------- Small screens and reduced motion (site) ---------- */
+
 @media (max-width: 640px) {
   .hud { justify-content: center; }
   .hud-part { display: none; }
@@ -420,7 +420,7 @@ img[src$="sprigatito.webp"] { scale: 2.1; }
   .btn, .chip, .round-btn { transition: none; }
 }
 
-/* ---------- Intro (book, then achievement) ---------- */
+
 .intro {
   position: fixed;
   inset: 0;
@@ -430,11 +430,11 @@ img[src$="sprigatito.webp"] { scale: 2.1; }
   background: #000;
 }
 
-/* Everything inside the book is sized in cqw (% of the book width), so it scales with the book. */
+
 .book {
   position: relative;
   height: min(52vh, 560px);
-  aspect-ratio: 292 / 360; /* matches minecraft-intro-page.png */
+  aspect-ratio: 292 / 360; 
   container-type: inline-size;
   color: #2b1d12;
 }
@@ -488,7 +488,7 @@ img[src$="sprigatito.webp"] { scale: 2.1; }
   border-radius: 10px;
   background: #262626;
   box-shadow: 0 10px 0 rgba(0, 0, 0, 0.6);
-  animation: toast 4s steps(8, end) forwards; /* slide in, hold, fade out, then onAnimationEnd goes home */
+  animation: toast 4s steps(8, end) forwards; 
 }
 .toast img { flex: none; height: 64px; }
 .toast-title { color: #ffff55; font-size: clamp(20px, 4.5vw, 30px); font-weight: 600; text-shadow: 3px 3px 0 #3f3f15; }

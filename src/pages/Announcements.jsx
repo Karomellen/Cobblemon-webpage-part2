@@ -20,7 +20,6 @@ const TYPE_LABEL = { event: 'EVENT', changelog: 'MODPACK CHANGELOG' }
 export default function Announcements() {
   const [filter, setFilter] = useState('all')
 
-  // Priority order first, newest first inside each priority.
   const groups = useMemo(
     () =>
       PRIORITIES.map((p) => ({
