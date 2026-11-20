@@ -1,4 +1,5 @@
 import { motion } from 'motion/react'
+import { spriteSrc } from '../sprites.js'
 
 // One of the big rounded panels the pages are built from.
 // Panels zigzag left/right automatically (see .stage in styles.css).
@@ -17,7 +18,7 @@ export default function Panel({ tone = 'cream', sprite, count = 1, className = '
       {sprite && (
         <div className="gutter" aria-hidden="true">
           {Array.from({ length: count }, (_, i) => (
-            <img key={i} src={`/images/sprites/${sprite}.png`} alt="" style={{ animationDelay: `${i * 0.2}s` }} />
+            <img key={i} src={spriteSrc(sprite)} alt="" style={{ animationDelay: `${i * 0.2}s` }} />
           ))}
         </div>
       )}

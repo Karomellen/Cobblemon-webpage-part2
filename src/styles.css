@@ -200,7 +200,10 @@ body {
 .gutter img { width: 64px; animation: hover-bob 1.2s steps(2, end) infinite alternate; }
 .gutter img:only-child { width: 92px; }
 @keyframes hover-bob { to { transform: translateY(-8px); } }
-
+/* mudkip.webp has extra empty space around it, so enlarge it to match the other sprites */
+img[src$="mudkip.webp"] { scale: 2; }
+img[src$="raichu.webp"] { scale: 1.5; }
+img[src$="sprigatito.webp"] { scale: 2.1; }
 /* Narrow screens: no side gaps, so one small sprite peeks over the panel's top edge. */
 @media (max-width: 999px) {
   .stage > .panel .gutter { top: -46px; right: 20px; left: auto; width: auto; transform: none; }

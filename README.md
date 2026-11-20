@@ -13,7 +13,9 @@ npm run dev              # terminal 2, site on :5173
 
 ## Where things are
 
-- `src/config.js`: server name, intro text, Discord profiles
+- `src/config.js`: server name, intro text, Discord profiles (each profile's `sprite` picks its card image)
+- `public/images/sprites/`: Pokémon sprites. Sprites that aren't `.png` (e.g. `.webp`) must be listed in `src/sprites.js`.
+  `node scripts/trim-sprites.mjs` regenerates the `.png` sprites from `public/images/<name>.png`; it doesn't touch the `.webp` ones.
 - `src/data/*.json`: announcements, rules, archive, faq (edit these, no code needed)
 - `public/images/archive/`: newspaper images, listed in `src/data/archive.json`
 - `server/index.js`: `/api/status`, the API key stays here and never reaches the browser

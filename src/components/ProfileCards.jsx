@@ -1,5 +1,6 @@
 import { motion } from 'motion/react'
 import { PROFILES } from '../config.js'
+import { spriteSrc } from '../sprites.js'
 
 const SPRITES = ['pikachu', 'rowlet', 'furret', 'mudkip', 'oshawott']
 
@@ -10,7 +11,7 @@ export default function ProfileCards() {
       {PROFILES.map((p, i) => (
         <motion.article key={p.handle} className="profile" whileHover={{ y: -8, rotate: i % 2 ? 1.5 : -1.5 }}>
           <div className="portrait">
-            <img src={`/images/sprites/${SPRITES[i % SPRITES.length]}.png`} alt="" />
+            <img src={spriteSrc(p.sprite ?? SPRITES[i % SPRITES.length])} alt="" />
           </div>
           <h3 className="handle">{p.handle}</h3>
           <p className="role">{p.role}</p>

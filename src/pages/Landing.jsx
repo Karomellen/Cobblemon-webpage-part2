@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import Panel from '../components/Panel.jsx'
 import ProfileCards from '../components/ProfileCards.jsx'
 import { SERVER_NAME, SERVER_PART } from '../config.js'
+import { spriteSrc } from '../sprites.js'
 
 // Part 1 key moments, shown as a timeline. `label` appears big in the background.
 const MOMENTS = [
@@ -108,7 +109,7 @@ export default function Landing() {
           {EXPLORE.map((e) => (
             <motion.div key={e.to} whileHover={{ y: -6 }} whileTap={{ scale: 0.97 }}>
               <Link to={e.to} className="card explore">
-                <img src={`/images/sprites/${e.sprite}.png`} alt="" />
+                <img src={spriteSrc(e.sprite)} alt="" />
                 <h3>{e.title}</h3>
                 <p>{e.text}</p>
               </Link>

@@ -12,7 +12,8 @@ export const INTRO = {
 }
 
 // Leave url empty to show the handle as plain text instead of a button.
+// sprite: name of a file in /images/sprites/ shown on the card.
 export const PROFILES = [
-  { handle: '@Bambooskies', role: '[ROLE]', url: '' },
-  { handle: '<@391377534442536970>', role: '[ROLE]', url: '' },
+  { handle: '@Bambooskies', role: '[ROLE]', url: '', sprite: 'raichu' },
+  { handle: '@Karomell', role: '[ROLE]', url: '', sprite: 'sprigatito' },
 ]
