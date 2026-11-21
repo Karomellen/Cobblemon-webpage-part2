@@ -42,7 +42,7 @@ export default function Intro({ onDone }) {
         </div>
         {done2 && (
           <button className="yes" autoFocus onClick={onYes} disabled={stage !== 'ask'}>
-            YES
+            YUP!
           </button>
         )}
       </div>
@@ -51,8 +51,8 @@ export default function Intro({ onDone }) {
         <div className="toast" role="status" onAnimationEnd={onDone}>
           <img src="/images/oshawott.png" alt="" />
           <div>
-            <p className="toast-title">New achievement made!</p>
-            <p className="toast-sub">The Start?</p>
+            <p className="toast-title">A wild server appeared!</p>
+            <p className="toast-sub">Gotta catch em' all!</p>
           </div>
         </div>
       )}

@@ -12,7 +12,7 @@ export default function Support() {
 
       <Panel sprite="oshawott" count={2} className="team">
         <div className="team-head">
-          <p className="kicker">Talk to a real person</p>
+          <p className="kicker">Dont be shy :3</p>
           <h2 className="title-lg">Talk to us</h2>
         </div>
         <ProfileCards />

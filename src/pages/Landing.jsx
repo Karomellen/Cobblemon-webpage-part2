@@ -91,7 +91,12 @@ export default function Landing() {
             transition={{ duration: 2.4, repeat: Infinity, ease: 'easeInOut' }}
           />
         </div>
-        <p className="lead">[SHORT SERVER INTRO: what the server is, who it is for, what is new in part 2.]</p>
+        <div className="lead">
+          <h2>Welcome to the Christmas Cobblemon Server! 🎄</h2>
+          <p>Before Hardcore SMP Season 2 arrives, we’re slowing things down for a cozy December together. The world is covered in snow, and Pokémon roam the frosty land.</p>
+          <p>This season, we’re building a Christmas village together. Open a bakery, run a Pokémon daycare, or set up a cocoa shop on the corner. With hundreds of furniture pieces, lights and festive blocks, there are endless ways to make your home your own.</p>
+          <p>And every village needs its residents. Catch and train Pokémon, put them to work around town, or team up with friends for raids.</p>
+        </div>
         <div className="row">
           <Link to="/rules" className="btn primary">Read the rules</Link>
           <Link to="/announcements" className="btn">Announcements</Link>

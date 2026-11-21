@@ -274,7 +274,7 @@ img[src$="sprigatito.webp"] { scale: 2.1; }
 }
 .hero-pika { position: absolute; z-index: 2; right: 5%; top: 6%; width: clamp(64px, 13vw, 150px); }
 .hero-rowlet { position: absolute; z-index: 2; left: 5%; bottom: 6%; width: clamp(52px, 10vw, 118px); }
-.lead { max-width: 640px; font-size: 18px; }
+.lead { display: grid; gap: 12px; max-width: 640px; font-size: 18px; }
 
 
 .recap > *:not(.ghost, .gutter) { position: relative; z-index: 1; }
@@ -522,8 +522,8 @@ img[src$="sprigatito.webp"] { scale: 2.1; }
   animation: toast 4s steps(8, end) forwards; 
 }
 .toast img { flex: none; height: 64px; }
-.toast-title { color: #ffff55; font-size: clamp(20px, 4.5vw, 30px); font-weight: 600; text-shadow: 3px 3px 0 #3f3f15; }
-.toast-sub { color: #fff; font-size: clamp(18px, 4vw, 28px); text-shadow: 3px 3px 0 #3f3f3f; }
+.toast-title { margin: 0; color: #ffff55; font-size: clamp(20px, 4.5vw, 30px); font-weight: 600; text-shadow: 3px 3px 0 #3f3f15; }
+.toast-sub { margin: 0; color: #fff; font-size: clamp(18px, 4vw, 28px); text-shadow: 3px 3px 0 #3f3f3f; }
 
 @keyframes blink { 50% { opacity: 0; } }
 @keyframes fade-in { from { opacity: 0; } }
