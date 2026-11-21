@@ -44,11 +44,11 @@ function Recap() {
       <h2>Part 1 recap</h2>
       <p>[2-3 sentences recapping Minecraft SMP part 1 and what carries over into part 2.]</p>
       <div className="recap-body">
-        <button className="round-btn" onClick={() => go(-1)} aria-label="Previous moment">â—€</button>
+        <button className="round-btn" onClick={() => go(-1)} aria-label="Previous moment">{'\u25C0'}</button>
         <motion.p key={step} className="quote" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}>
           {MOMENTS[step].text}
         </motion.p>
-        <button className="round-btn" onClick={() => go(1)} aria-label="Next moment">â–¶</button>
+        <button className="round-btn" onClick={() => go(1)} aria-label="Next moment">{'\u25B6'}</button>
       </div>
 
       <div className="progress" aria-hidden="true">

@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom'
 import Intro from './components/Intro.jsx'
 import Layout from './components/Layout.jsx'
+import Snowfall from './components/Snowfall.jsx'
 import Landing from './pages/Landing.jsx'
 import Announcements from './pages/Announcements.jsx'
 import Archive from './pages/Archive.jsx'
@@ -14,26 +15,32 @@ export default function App() {
 
   const [introDone, setIntroDone] = useState(false)
 
-  if (!introDone) {
-    const finishIntro = () => {
-      setIntroDone(true)
-      if (pathname === '/') navigate('/home', { replace: true })
-    }
-    return <Intro onDone={finishIntro} />
+  const finishIntro = () => {
+    setIntroDone(true)
+    if (pathname === '/') navigate('/home', { replace: true })
   }
 
   return (
-    <Routes>
-      {}
-      <Route path="/" element={<Intro onDone={() => navigate('/home')} />} />
-      <Route element={<Layout />}>
-        <Route path="/home" element={<Landing />} />
-        <Route path="/announcements" element={<Announcements />} />
-        <Route path="/archive" element={<Archive />} />
-        <Route path="/rules" element={<Rules />} />
-        <Route path="/support" element={<Support />} />
-      </Route>
-      <Route path="*" element={<Navigate to="/home" replace />} />
-    </Routes>
+    <>
+      <Snowfall />
+      <div className="app-content">
+        {!introDone ? (
+          <Intro onDone={finishIntro} />
+        ) : (
+          <Routes>
+            {}
+            <Route path="/" element={<Intro onDone={() => navigate('/home')} />} />
+            <Route element={<Layout />}>
+              <Route path="/home" element={<Landing />} />
+              <Route path="/announcements" element={<Announcements />} />
+              <Route path="/archive" element={<Archive />} />
+              <Route path="/rules" element={<Rules />} />
+              <Route path="/support" element={<Support />} />
+            </Route>
+            <Route path="*" element={<Navigate to="/home" replace />} />
+          </Routes>
+        )}
+      </div>
+    </>
   )
 }
