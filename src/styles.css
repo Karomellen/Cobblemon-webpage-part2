@@ -427,9 +427,29 @@ img[src$="sprigatito.webp"] { scale: 2.1; }
   display: grid;
   place-items: center;
   overflow: hidden;
-  background: #000;
+  background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
 }
 
+.snow-field {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.snowflake {
+  position: absolute;
+  top: -8px;
+  display: block;
+  border-radius: 50%;
+  background: #fff;
+  animation: simple-snow linear infinite;
+}
+
+.book,
+.toast {
+  z-index: 1;
+}
 
 .book {
   position: relative;
@@ -439,7 +459,17 @@ img[src$="sprigatito.webp"] { scale: 2.1; }
   color: #2b1d12;
 }
 .book > img { display: block; width: 100%; height: 100%; }
-.book-text { position: absolute; top: 16.7%; left: 11%; width: 75%; }
+.book-text {
+  position: absolute;
+  top: 16.7%;
+  left: 12.5%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 75%;
+  height: 43%;
+  text-align: center;
+}
 .book-line1 { font-size: 7.1cqw; font-weight: 600; line-height: 1.25; }
 .book-line2 { margin-top: 3cqw; font-size: 4.4cqw; line-height: 1.4; }
 .cursor {
@@ -454,11 +484,12 @@ img[src$="sprigatito.webp"] { scale: 2.1; }
 .yes {
   position: absolute;
   top: 69.7%;
-  left: 11%;
+  left: 50%;
   display: grid;
   place-items: center;
   width: 37.6%;
   height: 12.4cqw;
+  transform: translateX(-50%);
   border: 0.9cqw solid;
   border-color: #b8b8b8 #3a3a3a #3a3a3a #b8b8b8;
   background: #707070;
@@ -496,6 +527,11 @@ img[src$="sprigatito.webp"] { scale: 2.1; }
 
 @keyframes blink { 50% { opacity: 0; } }
 @keyframes fade-in { from { opacity: 0; } }
+@keyframes simple-snow {
+  0% { transform: translate3d(0, -8vh, 0); }
+  50% { transform: translate3d(var(--snow-drift), 50vh, 0); }
+  100% { transform: translate3d(0, 108vh, 0); }
+}
 @keyframes toast {
   0% { transform: translateY(-60px); opacity: 0; }
   10% { transform: none; opacity: 1; }
@@ -505,5 +541,5 @@ img[src$="sprigatito.webp"] { scale: 2.1; }
 
 
 @media (prefers-reduced-motion: reduce) {
-  .cursor, .yes, .toast { animation: none; }
+  .cursor, .yes, .toast, .snowflake { animation: none; }
 }
