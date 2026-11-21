@@ -10,6 +10,7 @@ const NAV = [
   { to: '/archive', label: 'Archive' },
   { to: '/rules', label: 'Rules' },
   { to: '/support', label: 'Support' },
+  { to: '/install', label: 'Install' },
 ]
 
 export default function Layout() {

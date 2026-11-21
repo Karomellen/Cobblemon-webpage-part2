@@ -8,6 +8,7 @@ import Announcements from './pages/Announcements.jsx'
 import Archive from './pages/Archive.jsx'
 import Rules from './pages/Rules.jsx'
 import Support from './pages/Support.jsx'
+import Installation from './pages/Installation.jsx'
 
 export default function App() {
   const navigate = useNavigate()
@@ -36,6 +37,7 @@ export default function App() {
               <Route path="/archive" element={<Archive />} />
               <Route path="/rules" element={<Rules />} />
               <Route path="/support" element={<Support />} />
+              <Route path="/install" element={<Installation />} />
             </Route>
             <Route path="*" element={<Navigate to="/home" replace />} />
           </Routes>
