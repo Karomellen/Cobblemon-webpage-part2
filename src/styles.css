@@ -372,7 +372,7 @@ img[src$="sprigatito.webp"] { scale: 2.1; }
 }
 .install-step p { line-height: 1.5; }
 
-.archive-image-button {
+.image-trigger {
   display: block;
   width: 100%;
   padding: 0;
@@ -380,33 +380,50 @@ img[src$="sprigatito.webp"] { scale: 2.1; }
   background: none;
   cursor: zoom-in;
 }
-.archive-image-button:focus-visible { outline: 3px dashed var(--red); outline-offset: 3px; }
-.archive-lightbox {
+.image-trigger:focus-visible { outline: 3px dashed var(--red); outline-offset: 3px; }
+.image-lightbox {
   position: fixed;
   inset: 0;
   z-index: 100;
   display: grid;
   place-items: center;
-  padding: 24px;
+  padding: 16px;
   background: rgba(5, 8, 14, 0.9);
 }
-.archive-lightbox-content {
+.image-lightbox-content {
   position: relative;
   display: grid;
   grid-template-columns: auto minmax(0, 1fr) auto;
   align-items: center;
-  gap: 16px;
-  width: min(1100px, 100%);
-  max-height: 100%;
-  padding: 56px 20px 46px;
+  gap: 12px;
+  width: min(900px, 92vw);
+  height: min(82vh, 760px);
+  max-height: calc(100vh - 32px);
+  padding: 52px 18px 46px;
+  overflow: hidden;
   border: var(--line);
   border-radius: var(--radius);
   background: var(--paper);
   box-shadow: var(--shadow);
 }
-.archive-lightbox-figure { grid-column: 2; grid-row: 1; min-width: 0; margin: 0; text-align: center; }
-.archive-lightbox-image { display: block; max-width: 100%; max-height: calc(100vh - 190px); margin: 0 auto 12px; object-fit: contain; }
-.archive-lightbox-figure figcaption { overflow-wrap: anywhere; font-family: var(--display); font-size: 14px; }
+.lightbox-figure { grid-column: 2; grid-row: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; min-width: 0; min-height: 0; max-height: 100%; margin: 0; overflow: hidden; text-align: center; }
+.lightbox-image { display: block; width: auto; max-width: 100%; max-height: calc(82vh - 150px); object-fit: contain; }
+.lightbox-placeholder {
+  display: grid;
+  place-items: center;
+  width: min(100%, 520px);
+  max-height: calc(82vh - 150px);
+  border: 2px dashed var(--brown);
+  border-radius: 8px;
+  background: var(--inset) repeating-linear-gradient(45deg, transparent 0 10px, var(--pattern) 10px 20px);
+  color: var(--muted);
+  font-family: var(--display);
+  font-size: 14px;
+}
+.archive-image-viewer .lightbox-placeholder { width: min(100%, 400px); max-height: calc(70vh - 120px); }
+.archive-image-viewer .lightbox-image { max-width: min(100%, 600px); max-height: calc(70vh - 120px); }
+.lightbox-caption { display: flex; flex-direction: column; gap: 4px; overflow-wrap: anywhere; font-family: var(--display); font-size: 14px; }
+.lightbox-caption span { color: var(--muted); font-family: var(--body); font-size: 13px; }
 .lightbox-close,
 .lightbox-arrow {
   display: grid;
@@ -421,6 +438,8 @@ img[src$="sprigatito.webp"] { scale: 2.1; }
 }
 .lightbox-close { position: absolute; top: 12px; right: 12px; min-height: 36px; padding: 0 10px; }
 .lightbox-arrow { grid-row: 1; width: 44px; height: 44px; font-size: 16px; }
+.lightbox-arrow.previous { grid-column: 1; }
+.lightbox-arrow.next { grid-column: 3; }
 .lightbox-arrow:disabled { opacity: 0.45; cursor: default; }
 .lightbox-close:focus-visible,
 .lightbox-arrow:focus-visible { outline: 3px dashed var(--red); outline-offset: 3px; }
@@ -480,11 +499,12 @@ img[src$="sprigatito.webp"] { scale: 2.1; }
   .hud { justify-content: center; }
   .hud-part { display: none; }
   .explore-panel .grid { grid-template-columns: 1fr; }
-  .archive-lightbox { padding: 10px; }
-  .archive-lightbox-content { gap: 6px; padding: 52px 8px 42px; }
+  .image-lightbox { padding: 10px; }
+  .image-lightbox-content { gap: 6px; width: 96vw; height: 82vh; padding: 52px 8px 42px; }
   .lightbox-arrow { width: 34px; height: 34px; font-size: 13px; }
-  .archive-lightbox-image { max-height: calc(100vh - 170px); }
-  .archive-lightbox-figure figcaption { font-size: 12px; }
+  .lightbox-image { max-height: calc(82vh - 150px); }
+  .lightbox-placeholder { max-height: calc(82vh - 150px); }
+  .lightbox-caption { font-size: 12px; }
   .recap-body { gap: 8px; }
   .steps button { font-size: 10px; }
   .steps button.active { font-size: 12px; }

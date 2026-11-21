@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import Chips from '../components/Chips.jsx'
+import ImageCarousel from '../components/ImageCarousel.jsx'
 import Panel from '../components/Panel.jsx'
 import issues from '../data/archive.json'
 
@@ -10,46 +11,29 @@ const SORTS = [
 
 export default function Archive() {
   const [order, setOrder] = useState('newest')
-  const [activeIndex, setActiveIndex] = useState(null)
+  const [viewerIndex, setViewerIndex] = useState(null)
   const triggerRef = useRef(null)
 
   const sorted = [...issues].sort((a, b) =>
     order === 'newest' ? b.date.localeCompare(a.date) : a.date.localeCompare(b.date),
   )
-  const imageIssues = sorted.filter((issue) => issue.image)
-  const activeIssue = activeIndex === null ? null : imageIssues[activeIndex]
+  const slides = sorted.map((issue) => ({
+    id: issue.id,
+    title: issue.title,
+    description: issue.date,
+    src: issue.image ? `/images/archive/${issue.image}` : null,
+    alt: issue.title,
+    placeholderText: 'Newspaper image placeholder',
+    aspectRatio: '3 / 4',
+  }))
 
   useEffect(() => {
-    if (activeIndex === null) {
-      triggerRef.current?.focus()
-      return
-    }
+    if (viewerIndex === null) triggerRef.current?.focus()
+  }, [viewerIndex])
 
-    const previousOverflow = document.body.style.overflow
-    document.body.style.overflow = 'hidden'
-
-    const handleKeyDown = (event) => {
-      if (event.key === 'Escape') {
-        setActiveIndex(null)
-      } else if (imageIssues.length > 1 && event.key === 'ArrowLeft') {
-        event.preventDefault()
-        setActiveIndex((index) => (index - 1 + imageIssues.length) % imageIssues.length)
-      } else if (imageIssues.length > 1 && event.key === 'ArrowRight') {
-        event.preventDefault()
-        setActiveIndex((index) => (index + 1) % imageIssues.length)
-      }
-    }
-
-    window.addEventListener('keydown', handleKeyDown)
-    return () => {
-      document.body.style.overflow = previousOverflow
-      window.removeEventListener('keydown', handleKeyDown)
-    }
-  }, [activeIndex, imageIssues.length])
-
-  const openImage = (event, issue) => {
+  const openImage = (event, index) => {
     triggerRef.current = event.currentTarget
-    setActiveIndex(imageIssues.findIndex((image) => image.id === issue.id))
+    setViewerIndex(index)
   }
 
   return (
@@ -62,20 +46,20 @@ export default function Archive() {
 
       <Panel sprite="mudkip" count={3}>
         <div className="inset grid grid-archive">
-          {sorted.map((i) => (
+          {sorted.map((i, index) => (
             <article key={i.id} className="card">
-              {i.image ? (
-                <button
-                  type="button"
-                  className="archive-image-button"
-                  aria-label={`View ${i.title} image`}
-                  onClick={(event) => openImage(event, i)}
-                >
+              <button
+                type="button"
+                className="image-trigger"
+                aria-label={`Enlarge ${i.title} newspaper`}
+                onClick={(event) => openImage(event, index)}
+              >
+                {i.image ? (
                   <img className="newspaper" src={`/images/archive/${i.image}`} alt="" />
-                </button>
-              ) : (
-                <div className="newspaper placeholder">NEWSPAPER IMAGE</div>
-              )}
+                ) : (
+                  <div className="newspaper placeholder">NEWSPAPER IMAGE</div>
+                )}
+              </button>
               <h3>{i.title}</h3>
               <p className="muted">{i.date}</p>
             </article>
@@ -83,52 +67,13 @@ export default function Archive() {
         </div>
       </Panel>
 
-      {activeIssue && (
-        <div
-          className="archive-lightbox"
-          onClick={(event) => {
-            if (event.target === event.currentTarget) setActiveIndex(null)
-          }}
-        >
-          <div className="archive-lightbox-content" role="dialog" aria-modal="true" aria-label="Newspaper image viewer">
-            <button
-              type="button"
-              className="lightbox-close"
-              aria-label="Close image viewer"
-              autoFocus
-              onClick={() => setActiveIndex(null)}
-            >
-              Close
-            </button>
-            <button
-              type="button"
-              className="lightbox-arrow"
-              aria-label="Previous image"
-              disabled={imageIssues.length < 2}
-              onClick={() => setActiveIndex((index) => (index - 1 + imageIssues.length) % imageIssues.length)}
-            >
-              {'\u25C0'}
-            </button>
-            <figure className="archive-lightbox-figure">
-              <img
-                className="archive-lightbox-image"
-                src={`/images/archive/${activeIssue.image}`}
-                alt={activeIssue.title}
-              />
-              <figcaption>{activeIssue.title} · {activeIssue.date}</figcaption>
-            </figure>
-            <button
-              type="button"
-              className="lightbox-arrow"
-              aria-label="Next image"
-              disabled={imageIssues.length < 2}
-              onClick={() => setActiveIndex((index) => (index + 1) % imageIssues.length)}
-            >
-              {'\u25B6'}
-            </button>
-            <p className="lightbox-counter" aria-live="polite">{activeIndex + 1} / {imageIssues.length}</p>
-          </div>
-        </div>
+      {viewerIndex !== null && (
+        <ImageCarousel
+          slides={slides}
+          initialIndex={viewerIndex}
+          onClose={() => setViewerIndex(null)}
+          variant="archive-image-viewer"
+        />
       )}
     </>
   )
