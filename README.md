@@ -8,25 +8,23 @@ Event page for our Cobblemon Part 2 server: intro screen, announcements, newspap
 > This page is not affiliated with or endorsed by any of them. The sprites are small decorations only and are not covered by this project's license.
 > If you are a rights holder and want something removed, contact karoline.rasmussenroed@gmail.com and it will be taken down.
  
-## Run it
+## Run locally
  
 ```
 npm install
-cp .env.example .env
 npm run server
 npm run dev
 ```
- 
-## Edit content
- 
-- `src/data/*.json`: announcements, rules, archive, faq
-- `src/config.js`: server name, intro text, Discord profiles
-- `public/images/archive/`: newspaper images, listed in `archive.json`
+
+Copy `.env.example` to `.env` and fill in the server settings. Apply `supabase/schema.sql` in the Supabase SQL editor. Keep the Supabase service role key and Discord bot token private.
+
+Register `/archive` with `npm run register:commands`, then invite the bot with the `bot` and `applications.commands` scopes. It needs permission to view and send messages and embed links in the archive channel. Only the configured Cobblemon role can upload; deleting the bot's archive post removes its entry and image.
+
 ## Deploy
- 
-1. `npm run build`, then host `dist/` on any static host (Netlify, Vercel, Cloudflare Pages).
-2. Run `npm run server` on a small Node host and set the `.env` values there.
-3. Set `VITE_API_BASE` to the server URL before building.
+
+Host the site on Netlify and the API/bot on an always-on Node host. Set the server environment variables from `.env.example`, adding the Netlify site URL to `CLIENT_ORIGIN`. Set Netlify's `VITE_API_BASE` to the API host URL, then build with `npm run build`.
+
+Run `npm test` for archive validation tests.
 ## Credits
  
 PokÃ©mon sprites: Nintendo, Creatures Inc., GAME FREAK inc., The PokÃ©mon Company.

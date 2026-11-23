@@ -1,6 +1,7 @@
 import 'dotenv/config'
 import express from 'express'
 import cors from 'cors'
+import { registerArchiveRoute, startArchiveBot } from './archive.js'
 
 const {
   PORT = 3001,
@@ -27,7 +28,17 @@ async function fetchStatus() {
 }
 
 const app = express()
-app.use(cors({ origin: CLIENT_ORIGIN }))
+const allowedOrigins = CLIENT_ORIGIN.split(',').map((origin) => origin.trim())
+app.use(
+  cors({
+    origin(origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) return callback(null, true)
+      callback(new Error(`Origin not allowed: ${origin}`))
+    },
+  }),
+)
+
+registerArchiveRoute(app)
 
 app.get('/api/status', async (_req, res) => {
   if (!MC_HOST) return res.status(500).json({ error: 'MC_HOST is not set' })
@@ -43,4 +54,5 @@ app.get('/api/status', async (_req, res) => {
   }
 })
 
-app.listen(PORT, () => console.log(`Status API on http://localhost:${PORT}`))
+await startArchiveBot()
+app.listen(PORT, () => console.log(`API on http://localhost:${PORT}`))
