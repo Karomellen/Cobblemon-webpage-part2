@@ -41,7 +41,14 @@ body {
 #root { min-height: 100vh; }
 .app-content { position: relative; z-index: 1; min-height: 100vh; }
 
-.site { font-family: var(--body); font-size: 16px; line-height: 1.6; }
+.site {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  font-family: var(--body);
+  font-size: 16px;
+  line-height: 1.6;
+}
 
 .site h1, .site h2, .site h3 { margin: 0; line-height: 1.1; }
 .site h1, .site h2 { font-family: var(--display); font-weight: 700; text-transform: uppercase; }
@@ -159,10 +166,12 @@ body {
 
 .stage {
   --gutter: 0px; 
+  flex: 1;
   display: flex;
   flex-direction: column;
   gap: 52px;
   max-width: 1152px;
+  width: 100%;
   margin: 0 auto;
   padding: 48px 16px 24px;
 }
@@ -351,6 +360,16 @@ img[src$="sprigatito.webp"] { scale: 2.1; }
 
 
 .page-head p { max-width: 640px; font-size: 18px; }
+
+.announcement-empty {
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  min-height: 220px;
+  text-align: center;
+}
+.announcement-empty img { width: 64px; height: auto; image-rendering: pixelated; }
+.announcement-empty > div { display: grid; gap: 8px; }
 
 .newspaper { display: block; width: 100%; aspect-ratio: 3 / 4; margin-bottom: 12px; border: 2px solid var(--brown); border-radius: 8px; object-fit: cover; }
 .placeholder { display: grid; place-items: center; background: var(--inset) repeating-linear-gradient(45deg, transparent 0 10px, var(--pattern) 10px 20px); font-family: var(--display); font-size: 14px; }

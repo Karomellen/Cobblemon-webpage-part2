@@ -35,27 +35,39 @@ export default function Announcements() {
     <>
       <Panel tone="yellow" sprite="rowlet" className="page-head">
         <h1>Announcements</h1>
-        <Chips label="Show:" options={FILTERS} value={filter} onChange={setFilter} />
+        {posts.length > 0 && (
+          <Chips label="Show:" options={FILTERS} value={filter} onChange={setFilter} />
+        )}
       </Panel>
 
-      {groups.map((g) => (
-        <Panel key={g.id} sprite={g.sprite} count={3}>
-          <h2 className="group-head">
-            <span className="tag" style={{ background: g.color, color: g.text }}>{g.label}</span>
-          </h2>
-          {g.items.map((a) => (
-            <article key={a.id} className="card">
-              <div className="card-top">
-                <span className="tag small">{TYPE_LABEL[a.type]}</span>
-                <span className="muted">{a.date}</span>
-              </div>
-              <h3>{a.title}</h3>
-              <p>{a.body}</p>
-              <p className="muted">By {a.author}</p>
-            </article>
-          ))}
+      {posts.length === 0 ? (
+        <Panel className="announcement-empty">
+          <img src="/images/sprites/psyduck.png" alt="" />
+          <div role="status">
+            <h2>No big news yet!</h2>
+            <p>Check back soon for announcements and updates.</p>
+          </div>
         </Panel>
-      ))}
+      ) : (
+        groups.map((g) => (
+          <Panel key={g.id} sprite={g.sprite} count={3}>
+            <h2 className="group-head">
+              <span className="tag" style={{ background: g.color, color: g.text }}>{g.label}</span>
+            </h2>
+            {g.items.map((a) => (
+              <article key={a.id} className="card">
+                <div className="card-top">
+                  <span className="tag small">{TYPE_LABEL[a.type]}</span>
+                  <span className="muted">{a.date}</span>
+                </div>
+                <h3>{a.title}</h3>
+                <p>{a.body}</p>
+                <p className="muted">By {a.author}</p>
+              </article>
+            ))}
+          </Panel>
+        ))
+      )}
     </>
   )
 }

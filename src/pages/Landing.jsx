@@ -7,9 +7,9 @@ import { SERVER_NAME, SERVER_PART } from '../config.js'
 import { spriteSrc } from '../sprites.js'
 
 const MOMENTS = [
-  { label: 'ACT 1', text: '[KEY MOMENT 1]' },
-  { label: 'ACT 2', text: '[KEY MOMENT 2]' },
-  { label: 'ACT 3', text: '[KEY MOMENT 3]' },
+  { label: 'ACT 1', text: 'We arrived in a brand-new world, chose our first Pokemon partners, and set out to explore together.' },
+  { label: 'ACT 2', text: 'We made the world our own, building homes, finding new Pokemon, and helping one another along the way.' },
+  { label: 'ACT 3', text: 'From close calls to shared victories, the best part was facing every challenge as a team.' },
 ]
 const SEGMENTS = 24
 
@@ -42,7 +42,7 @@ function Recap() {
       </AnimatePresence>
 
       <h2>Part 1 recap</h2>
-      <p>[2-3 sentences recapping Minecraft SMP part 1 and what carries over into part 2.]</p>
+      <p>Three moments that made our first adventure unforgettable.</p>
       <div className="recap-body">
         <button className="round-btn" onClick={() => go(-1)} aria-label="Previous moment">{'\u25C0'}</button>
         <motion.p key={step} className="quote" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}>
@@ -93,9 +93,9 @@ export default function Landing() {
         </div>
         <div className="lead">
           <h2>Welcome to the Christmas Cobblemon Server! 🎄</h2>
-          <p>Before Hardcore SMP Season 2 arrives, we’re slowing things down for a cozy December together. The world is covered in snow, and Pokémon roam the frosty land.</p>
-          <p>This season, we’re building a Christmas village together. Open a bakery, run a Pokémon daycare, or set up a cocoa shop on the corner. With hundreds of furniture pieces, lights and festive blocks, there are endless ways to make your home your own.</p>
-          <p>And every village needs its residents. Catch and train Pokémon, put them to work around town, or team up with friends for raids.</p>
+          <p>Before Hardcore SMP Season 2, we're slowing down for a cozy December. Snow covers the world and Pokémon roam the frosty land.</p>
+          <p>Together we're building a Christmas village. Open a bakery, run a Pokémon daycare or set up a cocoa shop, with hundreds of furniture pieces, lights and festive blocks to make your home your own.</p>
+          <p>Every village needs residents. Catch Pokémon, trade with friends and fill the village with life.</p>
         </div>
         <div className="row">
           <Link to="/rules" className="btn primary">Read the rules</Link>
