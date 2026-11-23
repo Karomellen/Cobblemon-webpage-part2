@@ -11,6 +11,10 @@ create table if not exists public.archive_issues (
 
 alter table public.archive_issues enable row level security;
 
+grant usage on schema public to service_role;
+grant select, insert, update, delete on table public.archive_issues to service_role;
+grant usage, select on all sequences in schema public to service_role;
+
 insert into storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
 values (
   'archive-images',
