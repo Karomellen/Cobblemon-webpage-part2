@@ -10,27 +10,47 @@ import Rules from './pages/Rules.jsx'
 import Support from './pages/Support.jsx'
 import Installation from './pages/Installation.jsx'
 
+const INTRO_SEEN_KEY = 'cobblemon-intro-seen'
+
+function hasSeenIntro() {
+  try {
+    return window.localStorage.getItem(INTRO_SEEN_KEY) === 'true'
+  } catch (error) {
+    console.warn('Could not read intro preference:', error)
+    return false
+  }
+}
+
+function markIntroSeen() {
+  try {
+    window.localStorage.setItem(INTRO_SEEN_KEY, 'true')
+  } catch (error) {
+    console.warn('Could not save intro preference:', error)
+  }
+}
+
 export default function App() {
   const navigate = useNavigate()
-  const { pathname } = useLocation()
+  const { pathname, search } = useLocation()
+  const replayIntro = new URLSearchParams(search).get('intro') === 'replay'
 
-  const [introDone, setIntroDone] = useState(false)
+  const [introDone, setIntroDone] = useState(hasSeenIntro)
 
   const finishIntro = () => {
+    markIntroSeen()
     setIntroDone(true)
-    if (pathname === '/') navigate('/home', { replace: true })
+    if (pathname === '/' || replayIntro) navigate('/home', { replace: true })
   }
 
   return (
     <>
       <Snowfall />
       <div className="app-content">
-        {!introDone ? (
+        {!introDone || replayIntro ? (
           <Intro onDone={finishIntro} />
         ) : (
           <Routes>
-            {}
-            <Route path="/" element={<Intro onDone={() => navigate('/home')} />} />
+            <Route path="/" element={<Navigate to="/home" replace />} />
             <Route element={<Layout />}>
               <Route path="/home" element={<Landing />} />
               <Route path="/announcements" element={<Announcements />} />

@@ -43,7 +43,7 @@ export default function Layout() {
         <footer className="footer">
           <p>Fan-made server. Not an official Minecraft, Pokémon or Cobblemon product.</p> 
           <Link to="https://pokemondb.net/sprites" className="btn">Pokémon sprites</Link>
-          <Link to="/" className="btn">Replay intro</Link>
+          <Link to="/?intro=replay" className="btn">Replay intro</Link>
         </footer>
       </div>
     </MotionConfig>
