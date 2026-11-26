@@ -313,6 +313,27 @@ img[src$="sprigatito.webp"] { scale: 2.1; }
   background: var(--yellow-light);
   text-align: center;
 }
+.calendar-pokemon {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: 12px;
+  font-family: var(--display);
+  font-size: 12px;
+  vertical-align: middle;
+}
+.calendar-sprite {
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
+  image-rendering: pixelated;
+}
+.round-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+  box-shadow: none;
+  transform: none;
+}
 .progress { display: flex; gap: 3px; padding: 4px; border: var(--line); border-radius: 6px; background: var(--yellow-light); }
 .progress span { flex: 1; height: 18px; border-radius: 2px; transition: background 0.2s steps(2, end); }
 .progress span.on { background: var(--blue); box-shadow: inset 0 -4px 0 rgba(0, 0, 0, 0.2); }

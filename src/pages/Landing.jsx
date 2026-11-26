@@ -5,13 +5,16 @@ import Panel from '../components/Panel.jsx'
 import ProfileCards from '../components/ProfileCards.jsx'
 import { SERVER_NAME, SERVER_PART } from '../config.js'
 import { spriteSrc } from '../sprites.js'
+import { CHRISTMAS_CALENDAR } from '../data/christmasCalendar.js'
 
-const MOMENTS = [
-  { label: 'ACT 1', text: 'We arrived in a brand-new world, chose our first Pokemon partners, and set out to explore together.' },
-  { label: 'ACT 2', text: 'We made the world our own, building homes, finding new Pokemon, and helping one another along the way.' },
-  { label: 'ACT 3', text: 'From close calls to shared victories, the best part was facing every challenge as a team.' },
-]
-const SEGMENTS = 24
+const ORDINAL_SUFFIXES = ['th', 'st', 'nd', 'rd']
+
+function getOrdinal(day) {
+  const suffix = day % 100 >= 11 && day % 100 <= 13
+    ? 'th'
+    : ORDINAL_SUFFIXES[day % 10] || ORDINAL_SUFFIXES[0]
+  return `${day}${suffix} December`
+}
 
 const EXPLORE = [
   { to: '/announcements', title: 'Announcements', text: 'Events and modpack changelogs, most important first.', sprite: 'pikachu' },
@@ -21,9 +24,17 @@ const EXPLORE = [
 ]
 
 function Recap() {
+  const slides = CHRISTMAS_CALENDAR
   const [step, setStep] = useState(0)
-  const filled = Math.round(((step + 1) / MOMENTS.length) * SEGMENTS)
-  const go = (d) => setStep((s) => (s + d + MOMENTS.length) % MOMENTS.length)
+  const availableSlides = slides.length
+  const selectedDay = slides[step].day
+  const filled = step + 1
+  const go = (difference) => setStep((current) => Math.max(0, Math.min(current + difference, availableSlides - 1)))
+
+  const labelDays = [...new Set([
+    1,
+    selectedDay,
+  ].filter((day) => day > 0))]
 
   return (
     <>
@@ -37,29 +48,58 @@ function Recap() {
           exit={{ opacity: 0, scale: 1.1 }}
           transition={{ duration: 0.25 }}
         >
-          {MOMENTS[step].label}
+          {selectedDay}
         </motion.div>
       </AnimatePresence>
 
-      <h2>Part 1 recap</h2>
-      <p>Three moments that made our first adventure unforgettable.</p>
+      <h2>Christmas Calendar</h2>
+      <p>One new celebration appears each day in December.</p>
       <div className="recap-body">
-        <button className="round-btn" onClick={() => go(-1)} aria-label="Previous moment">{'\u25C0'}</button>
+        <button
+          className="round-btn"
+          onClick={() => go(-1)}
+          aria-label="Previous day"
+          disabled={step === 0}
+        >{'\u25C0'}</button>
         <motion.p key={step} className="quote" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}>
-          {MOMENTS[step].text}
+          <>
+            <strong>{getOrdinal(selectedDay)}</strong>
+            <br />
+            In honor of {slides[step].person}. {slides[step].text}
+            <span className="calendar-pokemon">
+              <img
+                src={slides[step].sprite}
+                alt={slides[step].pokemon}
+                className="calendar-sprite"
+                width="64"
+                height="64"
+              />
+              <span>{slides[step].pokemon}</span>
+            </span>
+          </>
         </motion.p>
-        <button className="round-btn" onClick={() => go(1)} aria-label="Next moment">{'\u25B6'}</button>
+        <button
+          className="round-btn"
+          onClick={() => go(1)}
+          aria-label="Next day"
+          disabled={step >= availableSlides - 1}
+        >{'\u25B6'}</button>
       </div>
 
       <div className="progress" aria-hidden="true">
-        {Array.from({ length: SEGMENTS }, (_, i) => (
+        {Array.from({ length: availableSlides }, (_, i) => (
           <span key={i} className={i < filled ? 'on' : ''} />
         ))}
       </div>
       <div className="steps">
-        {MOMENTS.map((m, i) => (
-          <button key={m.label} className={i === step ? 'active' : ''} onClick={() => setStep(i)} aria-pressed={i === step}>
-            {m.label}
+        {labelDays.map((day) => (
+          <button
+            key={day}
+            className={day === selectedDay ? 'active' : ''}
+            onClick={() => setStep(day - 1)}
+            aria-pressed={day === selectedDay}
+          >
+            {`${day} Dec`}
           </button>
         ))}
       </div>
