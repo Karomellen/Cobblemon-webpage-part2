@@ -118,14 +118,14 @@ export default function Landing() {
           </h1>
           <motion.img
             className="hero-pika"
-            src="/images/sprites/pikachu.png"
+            src="/sprites/pikachu.png"
             alt=""
             animate={{ y: [0, -14, 0] }}
             transition={{ duration: 1.6, repeat: Infinity, ease: 'easeInOut' }}
           />
           <motion.img
             className="hero-rowlet"
-            src="/images/sprites/rowlet.png"
+            src="/sprites/rowlet.png"
             alt=""
             animate={{ rotate: [-6, 6, -6] }}
             transition={{ duration: 2.4, repeat: Infinity, ease: 'easeInOut' }}

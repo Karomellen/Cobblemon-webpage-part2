@@ -49,7 +49,7 @@ export default function Intro({ onDone }) {
 
       {stage === 'achievement' && (
         <div className="toast" role="status" onAnimationEnd={onDone}>
-          <img src="/images/oshawott.png" alt="" />
+          <img src="/sprites/oshawott.png" alt="" />
           <div>
             <p className="toast-title">A wild server appeared!</p>
             <p className="toast-sub">Gotta catch em' all!</p>

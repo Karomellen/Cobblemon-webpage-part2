@@ -42,7 +42,7 @@ export default function Announcements() {
 
       {posts.length === 0 ? (
         <Panel className="announcement-empty">
-          <img src="/images/sprites/psyduck.png" alt="" />
+          <img src="/sprites/psyduck.png" alt="" />
           <div role="status">
             <h2>No big news yet!</h2>
             <p>Check back soon for announcements and updates.</p>
