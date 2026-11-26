@@ -357,6 +357,9 @@ img[src$="sprigatito.webp"] { scale: 2.1; }
   transition: transform 0.12s steps(2, end);
 }
 .calendar-gift:hover { transform: translateY(-2px); }
+.calendar-gift:disabled { cursor: not-allowed; opacity: 0.72; }
+.calendar-gift:disabled:hover { transform: none; }
+.calendar-gift.is-locked { background-color: var(--yellow-light); }
 .calendar-gift:focus-visible { outline: 3px dashed var(--red); outline-offset: 3px; }
 .calendar-gift-icon {
   position: relative;

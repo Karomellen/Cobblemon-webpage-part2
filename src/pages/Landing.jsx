@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
 import { Link } from 'react-router-dom'
 import Panel from '../components/Panel.jsx'
@@ -16,6 +16,10 @@ function getOrdinal(day) {
   return `${day}${suffix} December`
 }
 
+function isCalendarDayAvailable(day, today) {
+  return today >= new Date(today.getFullYear(), 11, day)
+}
+
 const EXPLORE = [
   { to: '/announcements', title: 'Announcements', text: 'Events and modpack changelogs, most important first.', sprite: 'pikachu' },
   { to: '/archive', title: 'Archive', text: 'Expired hub newspapers, newest first.', sprite: 'furret' },
@@ -28,18 +32,26 @@ const OPENED_DAY_STORAGE_PREFIX = 'cobblemon-calendar-opened-day-'
 function Recap() {
   const slides = CHRISTMAS_CALENDAR
   const [step, setStep] = useState(0)
+  const [today, setToday] = useState(() => new Date())
   const [openedDays, setOpenedDays] = useState(() => new Set(
     CHRISTMAS_CALENDAR
       .filter(({ day }) => window.localStorage.getItem(`${OPENED_DAY_STORAGE_PREFIX}${day}`) === 'true')
       .map(({ day }) => day),
   ))
+  useEffect(() => {
+    const now = new Date()
+    const nextMidnight = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1)
+    const timeout = window.setTimeout(() => setToday(new Date()), nextMidnight.getTime() - now.getTime())
+    return () => window.clearTimeout(timeout)
+  }, [today])
   const availableSlides = slides.length
   const selectedDay = slides[step].day
-  const isOpened = openedDays.has(selectedDay)
+  const canOpen = isCalendarDayAvailable(selectedDay, today)
+  const isOpened = canOpen && openedDays.has(selectedDay)
   const filled = step + 1
   const go = (difference) => setStep((current) => Math.max(0, Math.min(current + difference, availableSlides - 1)))
   const openSelectedDay = () => {
-    if (isOpened) return
+    if (!canOpen || isOpened) return
     window.localStorage.setItem(`${OPENED_DAY_STORAGE_PREFIX}${selectedDay}`, 'true')
     setOpenedDays((current) => new Set(current).add(selectedDay))
   }
@@ -115,9 +127,10 @@ function Recap() {
               <motion.button
                 key="wrapped-gift"
                 type="button"
-                className="calendar-gift"
+                className={`calendar-gift${canOpen ? '' : ' is-locked'}`}
                 onClick={openSelectedDay}
-                aria-label={`Open the gift for ${getOrdinal(selectedDay)}`}
+                aria-label={canOpen ? `Open the gift for ${getOrdinal(selectedDay)}` : `Locked until ${getOrdinal(selectedDay)}`}
+                disabled={!canOpen}
                 exit={{ opacity: 0, y: -16, scale: 1.08, rotate: 3 }}
                 transition={{ duration: 0.22, ease: 'easeIn' }}
               >
@@ -125,7 +138,7 @@ function Recap() {
                   <span className="calendar-gift-bow" />
                   <span className="calendar-gift-box" />
                 </span>
-                <span>Open your gift</span>
+                <span>{canOpen ? 'Open your gift' : `Locked until ${getOrdinal(selectedDay)}`}</span>
               </motion.button>
             )}
           </AnimatePresence>
