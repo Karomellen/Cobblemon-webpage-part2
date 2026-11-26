@@ -23,13 +23,38 @@ const EXPLORE = [
   { to: '/support', title: 'Support', text: 'Discord contacts and common questions.', sprite: 'mudkip' },
 ]
 
+const OPENED_DAY_STORAGE_PREFIX = 'cobblemon-calendar-opened-day-'
+
 function Recap() {
   const slides = CHRISTMAS_CALENDAR
   const [step, setStep] = useState(0)
+  const [openedDays, setOpenedDays] = useState(() => new Set(
+    CHRISTMAS_CALENDAR
+      .filter(({ day }) => window.localStorage.getItem(`${OPENED_DAY_STORAGE_PREFIX}${day}`) === 'true')
+      .map(({ day }) => day),
+  ))
   const availableSlides = slides.length
   const selectedDay = slides[step].day
+  const isOpened = openedDays.has(selectedDay)
   const filled = step + 1
   const go = (difference) => setStep((current) => Math.max(0, Math.min(current + difference, availableSlides - 1)))
+  const openSelectedDay = () => {
+    if (isOpened) return
+    window.localStorage.setItem(`${OPENED_DAY_STORAGE_PREFIX}${selectedDay}`, 'true')
+    setOpenedDays((current) => new Set(current).add(selectedDay))
+  }
+  const spriteUrl = slides[step].sprite.toLowerCase()
+  const hasPokemonSparkles = !spriteUrl.includes('.gif')
+  const isPngSprite = spriteUrl.includes('.png')
+  const pokemonSprite = (
+    <img
+      src={slides[step].sprite}
+      alt={slides[step].pokemon}
+      className={`calendar-sprite${isPngSprite ? ' calendar-sprite-png' : ''}`}
+      width="112"
+      height="112"
+    />
+  )
 
   const labelDays = [...new Set([
     1,
@@ -61,23 +86,50 @@ function Recap() {
           aria-label="Previous day"
           disabled={step === 0}
         >{'\u25C0'}</button>
-        <motion.p key={step} className="quote" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}>
-          <>
+        <motion.div key={step} className="quote" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}>
+          <div className="calendar-date">
             <strong>{getOrdinal(selectedDay)}</strong>
-            <br />
-            In honor of {slides[step].person}. {slides[step].text}
-            <span className="calendar-pokemon">
-              <img
-                src={slides[step].sprite}
-                alt={slides[step].pokemon}
-                className="calendar-sprite"
-                width="64"
-                height="64"
-              />
-              <span>{slides[step].pokemon}</span>
-            </span>
-          </>
-        </motion.p>
+            <span className="calendar-pokemon-name">{isOpened ? slides[step].pokemon : 'Mystery gift'}</span>
+          </div>
+          <AnimatePresence mode="wait" initial={false}>
+            {isOpened ? (
+              <motion.div
+                key="opened-gift"
+                className="calendar-content"
+                initial={{ opacity: 0, y: 12, scale: 0.97 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                transition={{ duration: 0.3, ease: 'easeOut' }}
+              >
+                <p className="calendar-message">
+                  In honor of <strong>{slides[step].person}</strong>. {slides[step].text}
+                </p>
+                <div className="calendar-pokemon">
+                  <span className={`calendar-pokemon-art${hasPokemonSparkles ? ' has-sparkles' : ''}`}>
+                    {slides[step].pokemonUrl
+                      ? <a href={slides[step].pokemonUrl}>{pokemonSprite}</a>
+                      : pokemonSprite}
+                  </span>
+                </div>
+              </motion.div>
+            ) : (
+              <motion.button
+                key="wrapped-gift"
+                type="button"
+                className="calendar-gift"
+                onClick={openSelectedDay}
+                aria-label={`Open the gift for ${getOrdinal(selectedDay)}`}
+                exit={{ opacity: 0, y: -16, scale: 1.08, rotate: 3 }}
+                transition={{ duration: 0.22, ease: 'easeIn' }}
+              >
+                <span className="calendar-gift-icon" aria-hidden="true">
+                  <span className="calendar-gift-bow" />
+                  <span className="calendar-gift-box" />
+                </span>
+                <span>Open your gift</span>
+              </motion.button>
+            )}
+          </AnimatePresence>
+        </motion.div>
         <button
           className="round-btn"
           onClick={() => go(1)}

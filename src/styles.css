@@ -305,29 +305,166 @@ img[src$="sprigatito.webp"] { scale: 2.1; }
 .recap-body { display: flex; align-items: center; gap: 14px; }
 .quote {
   flex: 1;
-  max-width: 560px;
+  max-width: 640px;
   margin: 0 auto;
-  padding: 16px 20px;
+  padding: 18px 22px;
   border: 2px solid var(--brown);
   border-radius: 10px;
   background: var(--yellow-light);
-  text-align: center;
+  box-shadow: 3px 3px 0 rgba(59, 42, 26, 0.18);
+  text-align: left;
 }
+.calendar-date {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 10px;
+  border-bottom: 2px dashed rgba(59, 42, 26, 0.35);
+  font-family: var(--display);
+  font-size: 14px;
+  text-align: left;
+}
+.calendar-content {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 128px;
+  align-items: center;
+  gap: 16px;
+  padding-top: 6px;
+}
+.calendar-message {
+  font-size: 15px;
+  line-height: 1.55;
+}
+.calendar-gift {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 176px;
+  padding: 16px;
+  border: 2px dashed var(--brown);
+  border-radius: 8px;
+  background:
+    repeating-linear-gradient(135deg, transparent 0 14px, rgba(255, 255, 255, 0.18) 14px 20px),
+    var(--yellow);
+  color: var(--brown);
+  font: 700 12px var(--display);
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: transform 0.12s steps(2, end);
+}
+.calendar-gift:hover { transform: translateY(-2px); }
+.calendar-gift:focus-visible { outline: 3px dashed var(--red); outline-offset: 3px; }
+.calendar-gift-icon {
+  position: relative;
+  display: block;
+  width: 76px;
+  height: 68px;
+}
+.calendar-gift-box {
+  position: absolute;
+  bottom: 0;
+  left: 9px;
+  width: 58px;
+  height: 42px;
+  border: 3px solid var(--brown);
+  background: linear-gradient(90deg, transparent 38%, var(--yellow-light) 38% 62%, transparent 62%), var(--red);
+  box-shadow: 3px 3px 0 var(--brown);
+}
+.calendar-gift-box::before {
+  position: absolute;
+  top: -10px;
+  left: -7px;
+  width: 66px;
+  height: 10px;
+  border: 3px solid var(--brown);
+  background: var(--orange);
+  content: '';
+}
+.calendar-gift-bow {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  z-index: 1;
+  width: 34px;
+  height: 20px;
+  transform: translateX(-50%);
+}
+.calendar-gift-bow::before,
+.calendar-gift-bow::after {
+  position: absolute;
+  top: 2px;
+  width: 15px;
+  height: 10px;
+  border: 3px solid var(--brown);
+  border-radius: 10px 10px 2px 10px;
+  background: var(--yellow-light);
+  content: '';
+}
+.calendar-gift-bow::before { left: 0; transform: rotate(25deg); }
+.calendar-gift-bow::after { right: 0; transform: rotate(-25deg) scaleX(-1); }
 .calendar-pokemon {
-  display: inline-flex;
+  display: flex;
+  flex-direction: column;
   align-items: center;
   gap: 8px;
-  margin-left: 12px;
+  justify-self: center;
   font-family: var(--display);
-  font-size: 12px;
-  vertical-align: middle;
+  font-size: 11px;
+  text-align: center;
+}
+.calendar-pokemon-name {
+  font-size: 11px;
+  text-align: right;
+  white-space: nowrap;
+}
+.calendar-pokemon a {
+  display: grid;
+  place-items: center;
+}
+.calendar-pokemon-art {
+  position: relative;
+  display: grid;
+  place-items: center;
+}
+.calendar-pokemon-art.has-sparkles::before,
+.calendar-pokemon-art.has-sparkles::after {
+  position: absolute;
+  z-index: 2;
+  color: var(--paper);
+  font-family: var(--display);
+  line-height: 1;
+  text-shadow: 2px 2px 0 var(--brown);
+  content: '\2726';
+  pointer-events: none;
+  animation: calendar-sparkle 1.2s steps(2, end) infinite;
+}
+.calendar-pokemon-art.has-sparkles::before {
+  top: 16%;
+  right: 3%;
+  font-size: 20px;
+}
+.calendar-pokemon-art.has-sparkles::after {
+  bottom: 18%;
+  left: 6%;
+  font-size: 14px;
+  animation-delay: 0.6s;
+}
+@keyframes calendar-sparkle {
+  0%, 100% { opacity: 0.25; transform: translateY(3px) scale(0.7) rotate(0deg); }
+  50% { opacity: 1; transform: translateY(-5px) scale(1.1) rotate(45deg); }
 }
 .calendar-sprite {
-  width: 64px;
-  height: 64px;
+  width: 112px;
+  height: 112px;
   object-fit: contain;
   image-rendering: pixelated;
+  transform: scale(1.7);
 }
+.calendar-sprite-png { transform: translateY(-14px) scale(1.6); }
 .round-btn:disabled {
   cursor: not-allowed;
   opacity: 0.45;
@@ -546,6 +683,13 @@ img[src$="sprigatito.webp"] { scale: 2.1; }
   .lightbox-placeholder { max-height: calc(82vh - 150px); }
   .lightbox-caption { font-size: 12px; }
   .recap-body { gap: 8px; }
+  .quote { padding: 14px 12px; }
+  .calendar-content { grid-template-columns: minmax(0, 1fr) 96px; gap: 8px; }
+  .calendar-message { font-size: 13px; }
+  .calendar-gift { min-height: 156px; font-size: 10px; }
+  .calendar-sprite { width: 96px; height: 96px; transform: scale(1.5); }
+  .calendar-sprite-png { transform: translateY(-10px) scale(1.4); }
+  .calendar-pokemon { font-size: 9px; }
   .steps button { font-size: 10px; }
   .steps button.active { font-size: 12px; }
   .steps button.active::before, .steps button.active::after { content: ''; }
@@ -554,6 +698,8 @@ img[src$="sprigatito.webp"] { scale: 2.1; }
 @media (prefers-reduced-motion: reduce) {
   .gutter img { animation: none; }
   .btn, .chip, .round-btn { transition: none; }
+  .calendar-gift { transition: none; }
+  .calendar-pokemon-art.has-sparkles::before, .calendar-pokemon-art.has-sparkles::after { animation: none; }
 }
 
 
