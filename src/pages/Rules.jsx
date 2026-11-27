@@ -18,7 +18,15 @@ export default function Rules() {
           <article className="card">
             <ul>
               {c.rules.map((rule) => (
-                <li key={rule}>{rule}</li>
+                <li key={typeof rule === 'string' ? rule : rule.mention}>
+                  {typeof rule === 'string' ? rule : (
+                    <>
+                      {rule.before}
+                      <a href={rule.url} target="_blank" rel="noreferrer">{rule.mention}</a>
+                      {rule.after}
+                    </>
+                  )}
+                </li>
               ))}
             </ul>
           </article>
