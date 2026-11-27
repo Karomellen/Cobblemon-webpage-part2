@@ -99,7 +99,7 @@ function Recap() {
           disabled={step === 0}
         >{'\u25C0'}</button>
         <motion.div key={step} className="quote" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}>
-          <div className="calendar-date">
+          <div className={`calendar-date${isOpened ? '' : ' is-closed'}`}>
             <strong>{getOrdinal(selectedDay)}</strong>
             <span className="calendar-pokemon-name">{isOpened ? slides[step].pokemon : 'Mystery gift'}</span>
           </div>

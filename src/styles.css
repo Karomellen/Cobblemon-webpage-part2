@@ -325,6 +325,7 @@ img[src$="sprigatito.webp"] { scale: 2.1; }
   font-size: 14px;
   text-align: left;
 }
+.calendar-date.is-closed { border-bottom: 0; }
 .calendar-content {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 128px;
