@@ -1,12 +1,48 @@
 {
   "categories": [
-    { "title": "Conduct and general gameplay", "priority": "high", "rules": ["[RULE TEXT]"] },
-    { "title": "Griefing", "priority": "high", "rules": ["[RULE TEXT]"] },
-    { "title": "Roleplay", "priority": "high", "rules": ["[RULE TEXT]"] },
-    { "title": "PvP", "priority": "medium", "rules": ["[RULE TEXT]"] },
-    { "title": "Death and resurrection", "priority": "medium", "rules": ["[RULE TEXT]"] },
-    { "title": "Communication", "priority": "medium", "rules": ["[RULE TEXT]"] },
-    { "title": "Admin help", "priority": "low", "rules": ["[RULE TEXT]"] }
+    {
+      "title": "Rule changes",
+      "rules": [
+        "Admins can update the rules.",
+        "Any changes will be posted on the Announcements page."
+      ]
+    },
+    {
+      "title": "Conduct & General Gameplay",
+      "rules": [
+        "Harassment and hate speech are not allowed. Instant ban.",
+        "Skins, book text and signs must stay family friendly.",
+        "Lag and performance: please limit huge farms, redstone clocks and entity-heavy builds.",
+        "Your team is a starting point, not a fixed group. You can leave, defect, go solo, or play as a wildcard."
+      ]
+    },
+    {
+      "title": "Griefing",
+      "rules": [
+        "Do not break blocks, steal items or change another player's builds without their direct permission. Violations can be punished.",
+        "Small, harmless pranks are allowed.",
+        "Avoid anything that causes permanent damage or item loss.",
+        "No x-ray."
+      ]
+    },
+    {
+      "title": "Communication",
+      "rules": [
+        "We want you to use in-game proximity chat! Talking to the people near you is a big part of the fun.",
+        "Please avoid Discord voice calls and in-game group voice chats. Keeping voice local helps communication feel more authentic and makes the story more fun for everyone."
+      ]
+    },
+    {
+      "title": "Admin Help",
+      "rules": [
+        "Admins do not teleport you home. If you're stuck, settle down and build a new civilization.",
+        "Admins do not hand out items, except story-based ones like books and custom items.",
+        "If a known bug is stopping you from doing what you want, contact the admins."
+      ]
+    }
   ],
-  "consequences": ["[CONSEQUENCE TEXT]"]
+  "consequences": [
+    "Hate speech, bullying or harassment leads to a ban. No questions asked.",
+    "For other rules, we usually give warnings first, but repeated rule breaking will lead to a ban."
+  ]
 }

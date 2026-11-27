@@ -333,8 +333,51 @@ img[src$="sprigatito.webp"] { scale: 2.1; }
   padding-top: 6px;
 }
 .calendar-message {
+  display: grid;
+  grid-template-columns: 38px minmax(0, 1fr);
+  align-items: start;
+  gap: 10px;
   font-size: 15px;
   line-height: 1.55;
+}
+.calendar-avatar {
+  width: 38px;
+  height: 38px;
+  border: 2px solid var(--brown);
+  border-radius: 50%;
+  object-fit: cover;
+}
+.calendar-avatar-placeholder {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  background: var(--yellow);
+}
+.calendar-avatar-placeholder::before,
+.calendar-avatar-placeholder::after {
+  position: absolute;
+  left: 50%;
+  display: block;
+  background: var(--brown);
+  content: '';
+  transform: translateX(-50%);
+}
+.calendar-avatar-placeholder::before {
+  top: 6px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+.calendar-avatar-placeholder::after {
+  bottom: 4px;
+  width: 23px;
+  height: 13px;
+  border-radius: 13px 13px 6px 6px;
+}
+.calendar-honoree-text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 .calendar-gift {
   display: flex;
@@ -688,7 +731,10 @@ img[src$="sprigatito.webp"] { scale: 2.1; }
   .recap-body { gap: 8px; }
   .quote { padding: 14px 12px; }
   .calendar-content { grid-template-columns: minmax(0, 1fr) 96px; gap: 8px; }
-  .calendar-message { font-size: 13px; }
+  .calendar-message { grid-template-columns: 32px minmax(0, 1fr); gap: 8px; font-size: 13px; }
+  .calendar-avatar { width: 32px; height: 32px; }
+  .calendar-avatar-placeholder::before { top: 4px; width: 9px; height: 9px; }
+  .calendar-avatar-placeholder::after { bottom: 3px; width: 20px; height: 11px; }
   .calendar-gift { min-height: 156px; font-size: 10px; }
   .calendar-sprite { width: 96px; height: 96px; transform: scale(1.5); }
   .calendar-sprite-png { transform: translateY(-10px) scale(1.4); }

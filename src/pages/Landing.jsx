@@ -47,7 +47,7 @@ function Recap() {
   const availableSlides = slides.length
   const selectedDay = slides[step].day
   const canOpen = isCalendarDayAvailable(selectedDay, today)
-  const isOpened = canOpen && openedDays.has(selectedDay)
+  const isOpened = import.meta.env.DEV || (canOpen && openedDays.has(selectedDay))
   const filled = step + 1
   const go = (difference) => setStep((current) => Math.max(0, Math.min(current + difference, availableSlides - 1)))
   const openSelectedDay = () => {
@@ -112,9 +112,25 @@ function Recap() {
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 transition={{ duration: 0.3, ease: 'easeOut' }}
               >
-                <p className="calendar-message">
-                  In honor of <strong>{slides[step].person}</strong>. {slides[step].text}
-                </p>
+                <div className="calendar-message">
+                  {slides[step].discordAvatar ? (
+                    <img
+                      className="calendar-avatar"
+                      src={slides[step].discordAvatar}
+                      alt={`${slides[step].person}'s Discord profile`}
+                    />
+                  ) : (
+                    <span
+                      className="calendar-avatar calendar-avatar-placeholder"
+                      role="img"
+                      aria-label={`Discord profile picture placeholder for ${slides[step].person}`}
+                    />
+                  )}
+                  <span className="calendar-honoree-text">
+                    <span>In honor of <strong>{slides[step].person}</strong>.</span>
+                    <span>{slides[step].text}</span>
+                  </span>
+                </div>
                 <div className="calendar-pokemon">
                   <span className={`calendar-pokemon-art${hasPokemonSparkles ? ' has-sparkles' : ''}`}>
                     {slides[step].pokemonUrl
