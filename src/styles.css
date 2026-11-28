@@ -131,7 +131,13 @@ body {
 .row { display: flex; flex-wrap: wrap; gap: 14px; }
 .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 20px; }
 .grid-archive { grid-template-columns: repeat(auto-fill, minmax(min(100%, 230px), 1fr)); }
-.archive-filters { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 18px; padding-bottom: 14px; border-bottom: 2px dashed rgba(59, 42, 26, 0.35); }
+.archive-filters { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 12px; margin-bottom: 18px; padding-bottom: 14px; border-bottom: 2px dashed rgba(59, 42, 26, 0.35); }
+.archive-filter-group { display: flex; flex-wrap: wrap; gap: 12px; }
+.archive-refresh-button { margin-left: auto; }
+.archive-refresh-button svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.archive-refresh-button.is-refreshing svg { animation: archive-refresh-spin 0.8s linear infinite; }
+@keyframes archive-refresh-spin { to { transform: rotate(360deg); } }
+.archive-loading { grid-column: 1 / -1; min-height: 100px; margin: 0; }
 .archive-filter { position: relative; display: flex; flex-direction: column; gap: 5px; color: var(--brown); font-family: var(--display); font-size: 13px; font-weight: 700; }
 .archive-filter::after { position: absolute; right: 14px; bottom: 13px; width: 7px; height: 7px; border-right: 2px solid var(--brown); border-bottom: 2px solid var(--brown); content: ''; pointer-events: none; transform: rotate(45deg); }
 .archive-filter select { min-width: 180px; min-height: 38px; padding: 6px 34px 6px 10px; appearance: none; border: var(--line); border-radius: 8px; background: var(--paper); color: var(--brown); color-scheme: light; cursor: pointer; font: inherit; }
@@ -312,6 +318,19 @@ img[src$="sprigatito.webp"] { scale: 2.1; }
   pointer-events: none;
 }
 .recap-body { display: flex; align-items: center; gap: 14px; }
+.calendar-loading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin: 12px auto;
+  color: var(--brown);
+  font-family: var(--display);
+  font-weight: 700;
+  text-align: center;
+}
+.calendar-loading img { width: 48px; height: 48px; object-fit: contain; }
 .quote {
   flex: 1;
   max-width: 640px;
@@ -767,6 +786,7 @@ img[src$="sprigatito.webp"] { scale: 2.1; }
 @media (prefers-reduced-motion: reduce) {
   .gutter img { animation: none; }
   .btn, .chip, .round-btn { transition: none; }
+  .archive-refresh-button.is-refreshing svg { animation: none; }
   .calendar-gift { transition: none; }
   .calendar-pokemon-art.has-sparkles::before, .calendar-pokemon-art.has-sparkles::after { animation: none; }
 }

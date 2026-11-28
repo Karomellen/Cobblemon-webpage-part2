@@ -5,6 +5,7 @@ import Panel from '../components/Panel.jsx'
 const API = import.meta.env.VITE_API_BASE ?? ''
 const INITIAL_VISIBLE_COUNT = 3
 const VISIBLE_INCREMENT = 3
+const REFRESH_DELAY_MS = 3000
 
 function formatArchiveDate(value) {
   const [year, month, day] = value.split('-')
@@ -61,7 +62,10 @@ export default function Archive() {
   const [viewerIndex, setViewerIndex] = useState(null)
   const [issues, setIssues] = useState([])
   const [loadState, setLoadState] = useState('loading')
+  const [refreshKey, setRefreshKey] = useState(0)
   const triggerRef = useRef(null)
+  const refreshTimerRef = useRef(null)
+  const isRefreshing = loadState === 'loading' || uploadersLoadState === 'loading'
 
   useEffect(() => {
     const controller = new AbortController()
@@ -81,7 +85,7 @@ export default function Archive() {
       })
 
     return () => controller.abort()
-  }, [])
+  }, [refreshKey])
 
   useEffect(() => {
     const controller = new AbortController()
@@ -107,7 +111,7 @@ export default function Archive() {
       })
 
     return () => controller.abort()
-  }, [page, sort, uploaderId])
+  }, [page, sort, uploaderId, refreshKey])
 
   const visibleIssues = issues.slice(0, visibleCount)
   const canLoadMore = visibleCount < issues.length
@@ -124,6 +128,10 @@ export default function Archive() {
   useEffect(() => {
     if (viewerIndex === null) triggerRef.current?.focus()
   }, [viewerIndex])
+
+  useEffect(() => () => {
+    if (refreshTimerRef.current !== null) window.clearTimeout(refreshTimerRef.current)
+  }, [])
 
   const openImage = (event, index) => {
     triggerRef.current = event.currentTarget
@@ -147,6 +155,16 @@ export default function Archive() {
     setPage(nextPage)
   }
 
+  const refreshArchive = () => {
+    setLoadState('loading')
+    setUploadersLoadState('loading')
+    window.clearTimeout(refreshTimerRef.current)
+    refreshTimerRef.current = window.setTimeout(() => {
+      refreshTimerRef.current = null
+      setRefreshKey((current) => current + 1)
+    }, REFRESH_DELAY_MS)
+  }
+
   return (
     <>
       <Panel tone="yellow" sprite="furret" className="page-head">
@@ -157,33 +175,53 @@ export default function Archive() {
       <Panel sprite="mudkip" count={3}>
         <div className="inset archive-inset">
           <div className="archive-filters">
-            <label className="archive-filter" htmlFor="archive-uploader">
-              <span>Uploaded by</span>
-              <select
-                id="archive-uploader"
-                value={uploaderId}
-                onChange={changeUploader}
-                disabled={uploadersLoadState !== 'loaded'}
-              >
-                <option value="">All uploaders</option>
-                {uploaders.map((uploader) => (
-                  <option key={uploader.id} value={uploader.id}>{uploader.username}</option>
-                ))}
-              </select>
-            </label>
-            <label className="archive-filter" htmlFor="archive-date">
-              <span>Date</span>
-              <select id="archive-date" value={sort} onChange={changeSort}>
-                <option value="newest">Newest first</option>
-                <option value="oldest">Oldest first</option>
-              </select>
-            </label>
+            <div className="archive-filter-group">
+              <label className="archive-filter" htmlFor="archive-uploader">
+                <span>Uploaded by</span>
+                <select
+                  id="archive-uploader"
+                  value={uploaderId}
+                  onChange={changeUploader}
+                  disabled={uploadersLoadState !== 'loaded'}
+                >
+                  <option value="">All uploaders</option>
+                  {uploaders.map((uploader) => (
+                    <option key={uploader.id} value={uploader.id}>{uploader.username}</option>
+                  ))}
+                </select>
+              </label>
+              <label className="archive-filter" htmlFor="archive-date">
+                <span>Date</span>
+                <select id="archive-date" value={sort} onChange={changeSort} disabled={isRefreshing}>
+                  <option value="newest">Newest first</option>
+                  <option value="oldest">Oldest first</option>
+                </select>
+              </label>
+            </div>
+            <button
+              type="button"
+              className={`round-btn archive-refresh-button${isRefreshing ? ' is-refreshing' : ''}`}
+              onClick={refreshArchive}
+              disabled={isRefreshing}
+              aria-label="Refresh archive"
+              title="Refresh archive"
+            >
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M20 7v5h-5M4 17v-5h5" />
+                <path d="M5.6 9a7 7 0 0 1 11.5-2L20 12M4 12l2.9 5a7 7 0 0 0 11.5-2" />
+              </svg>
+            </button>
           </div>
           {uploadersLoadState === 'error' && (
             <p role="alert">Could not load the uploader filter. Please try again later.</p>
           )}
           <div className="grid grid-archive">
-            {loadState === 'loading' && <p role="status">Loading archive...</p>}
+            {loadState === 'loading' && (
+              <div className="calendar-loading archive-loading" role="status" aria-live="polite">
+                <img src="/CAL_sprites/mew_LOADING.gif" alt="" />
+                <span>Please hold, fetching some data :3</span>
+              </div>
+            )}
             {loadState === 'error' && <p role="alert">Could not load the archive. Please try again later.</p>}
             {loadState === 'loaded' && issues.length === 0 && <p>No archive entries found.</p>}
             {loadState === 'loaded' && visibleIssues.map((i, index) => (
