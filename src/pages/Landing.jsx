@@ -7,6 +7,7 @@ import { SERVER_NAME, SERVER_PART } from '../config.js'
 import { spriteSrc } from '../sprites.js'
 import { CHRISTMAS_CALENDAR } from '../data/christmasCalendar.js'
 
+const API = import.meta.env.VITE_API_BASE ?? ''
 const ORDINAL_SUFFIXES = ['th', 'st', 'nd', 'rd']
 
 function getOrdinal(day) {
@@ -33,11 +34,32 @@ function Recap() {
   const slides = CHRISTMAS_CALENDAR
   const [step, setStep] = useState(0)
   const [today, setToday] = useState(() => new Date())
+  const [discordAvatars, setDiscordAvatars] = useState({})
   const [openedDays, setOpenedDays] = useState(() => new Set(
     CHRISTMAS_CALENDAR
       .filter(({ day }) => window.localStorage.getItem(`${OPENED_DAY_STORAGE_PREFIX}${day}`) === 'true')
       .map(({ day }) => day),
   ))
+  useEffect(() => {
+    const controller = new AbortController()
+
+    fetch(`${API}/api/calendar/avatars`, { signal: controller.signal })
+      .then((response) => {
+        if (!response.ok) throw new Error('Calendar avatars are unavailable.')
+        return response.json()
+      })
+      .then((data) => {
+        if (!data || typeof data !== 'object' || Array.isArray(data)) {
+          throw new Error('Calendar avatar response is invalid.')
+        }
+        setDiscordAvatars(data)
+      })
+      .catch((error) => {
+        if (error.name !== 'AbortError') console.error('Could not load calendar avatars:', error.message)
+      })
+
+    return () => controller.abort()
+  }, [])
   useEffect(() => {
     const now = new Date()
     const nextMidnight = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1)
@@ -46,6 +68,7 @@ function Recap() {
   }, [today])
   const availableSlides = slides.length
   const selectedDay = slides[step].day
+  const discordAvatar = slides[step].discordAvatar || discordAvatars[selectedDay]
   const canOpen = isCalendarDayAvailable(selectedDay, today)
   const isOpened = import.meta.env.DEV || (canOpen && openedDays.has(selectedDay))
   const filled = step + 1
@@ -113,10 +136,10 @@ function Recap() {
                 transition={{ duration: 0.3, ease: 'easeOut' }}
               >
                 <div className="calendar-message">
-                  {slides[step].discordAvatar ? (
+                  {discordAvatar ? (
                     <img
                       className="calendar-avatar"
-                      src={slides[step].discordAvatar}
+                      src={discordAvatar}
                       alt={`${slides[step].person}'s Discord profile`}
                     />
                   ) : (

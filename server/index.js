@@ -54,5 +54,5 @@ app.get('/api/status', async (_req, res) => {
   }
 })
 
-await startArchiveBot()
+await startArchiveBot(app)
 app.listen(PORT, () => console.log(`API on http://localhost:${PORT}`))

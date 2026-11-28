@@ -7,11 +7,13 @@ import {
   GatewayIntentBits,
   Partials,
 } from 'discord.js'
+import { CHRISTMAS_CALENDAR } from '../src/data/christmasCalendar.js'
 import { formatArchiveDate, getImageFormat, isAllowedImageSize } from './archive-utils.js'
 
 const BUCKET = 'archive-images'
 const ALLOWED_IMAGE_TYPES = new Set(['image/png', 'image/jpeg', 'image/webp'])
 const ARCHIVE_PAGE_SIZE = 12
+const CALENDAR_AVATAR_CACHE_MS = 24 * 60 * 60 * 1000
 
 function createStore() {
   const { SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY } = process.env
@@ -82,6 +84,54 @@ export function registerArchiveRoute(app) {
   })
 }
 
+function registerCalendarAvatarRoute(app, bot) {
+  let cachedAvatars = null
+  let cachedAt = 0
+  let pendingRequest
+
+  app.get('/api/calendar/avatars', async (_req, res) => {
+    if (cachedAvatars && Date.now() - cachedAt < CALENDAR_AVATAR_CACHE_MS) {
+      return res.json(cachedAvatars)
+    }
+
+    try {
+      if (!pendingRequest) {
+        pendingRequest = resolveCalendarAvatars(bot)
+          .then((avatars) => {
+            cachedAvatars = avatars
+            cachedAt = Date.now()
+            return avatars
+          })
+          .finally(() => {
+            pendingRequest = null
+          })
+      }
+
+      const avatars = await pendingRequest
+      res.set('Cache-Control', 'public, max-age=86400')
+      res.json(avatars)
+    } catch (error) {
+      console.error('Could not load calendar avatars:', error.message)
+      res.status(503).json({ error: 'Calendar avatars are unavailable' })
+    }
+  })
+}
+
+export async function resolveCalendarAvatars(bot) {
+  const entries = await Promise.all(CHRISTMAS_CALENDAR.map(async ({ day, person, discordId }) => {
+    try {
+      const user = await bot.users.fetch(discordId)
+      return [day, user.displayAvatarURL({ size: 128 })]
+    } catch (error) {
+      console.error(`Could not fetch calendar avatar for ${person} (${discordId}):`, error.message)
+      return null
+    }
+  }))
+  const avatars = Object.fromEntries(entries.filter(Boolean))
+  if (!Object.keys(avatars).length) throw new Error('No calendar avatars could be fetched')
+  return avatars
+}
+
 async function removeArchivePost(store, messageId) {
   const { data, error } = await store
     .from('archive_issues')
@@ -124,7 +174,7 @@ async function fetchImage(attachment) {
   return { bytes, format }
 }
 
-export async function startArchiveBot() {
+export async function startArchiveBot(app) {
   const token = process.env.DISCORD_BOT_TOKEN
   if (!token) {
     console.info('Discord archive bot disabled: DISCORD_BOT_TOKEN is not set')
@@ -154,6 +204,7 @@ export async function startArchiveBot() {
     intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages],
     partials: [Partials.Channel, Partials.Message],
   })
+  registerCalendarAvatarRoute(app, bot)
 
   bot.once(Events.ClientReady, (client) => {
     console.info(`Archive bot ready as ${client.user.tag}`)

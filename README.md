@@ -19,7 +19,7 @@ npm run dev
 
 Copy `.env.example` to `.env` and fill in the server settings. Apply `supabase/schema.sql` in the Supabase SQL editor. Keep the Supabase service role key and Discord bot token private.
 
-Register `/archive` with `npm run register:commands`, then invite the bot with the `bot` and `applications.commands` scopes. It needs permission to view and send messages and embed links in the archive channel. Only the configured Cobblemon role can upload; the uploader's Discord server name, avatar and current UTC date are assigned automatically, and the name links to their profile. The only required inputs are subtext and image. Images are limited to 4 MB; under 1 MB is recommended. The archive filters by uploader and date, starts with the 3 newest entries, reveals 3 more at a time up to 12, then paginates. Deleting the bot's archive post removes its entry and image.
+Register `/archive` with `npm run register:commands`, then invite the bot with the `bot` and `applications.commands` scopes. It needs permission to view and send messages and embed links in the archive channel. Only the configured Cobblemon role can upload; the uploader's Discord server name, avatar and current UTC date are assigned automatically, and the name links to their profile. The only required inputs are subtext and image. Images are limited to 4 MB; under 1 MB is recommended. The archive filters by uploader and date, starts with the 3 newest entries, reveals 3 more at a time up to 12, then paginates. The Christmas calendar retrieves profile avatars for its listed Discord IDs through the bot. Deleting the bot's archive post removes its entry and image.
 
 ## Deploy
 
