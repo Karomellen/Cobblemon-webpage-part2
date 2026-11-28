@@ -4,7 +4,7 @@ Event page for our Cobblemon Part 2 server: intro screen, announcements, newspap
  
 > **Disclaimer**
 > This is a fan-made, non-commercial event page. No profit is made from it.
-> PokÃ©mon and its sprites belong to Nintendo, Creatures Inc., GAME FREAK inc. and The PokÃ©mon Company. Minecraft belongs to Mojang Studios and Microsoft. Cobblemon is made by the Cobblemon team.
+> Pokemon and its sprites belong to Nintendo, Creatures Inc., GAME FREAK inc. and The PokÃ©mon Company. Minecraft belongs to Mojang Studios and Microsoft. Cobblemon is made by the Cobblemon team.
 > This page is not affiliated with or endorsed by any of them. The sprites are small decorations only and are not covered by this project's license.
 > If you are a rights holder and want something removed, contact karoline.rasmussenroed@gmail.com and it will be taken down.
  
