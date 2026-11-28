@@ -11,6 +11,7 @@ import { formatArchiveDate, getImageFormat, isAllowedImageSize } from './archive
 
 const BUCKET = 'archive-images'
 const ALLOWED_IMAGE_TYPES = new Set(['image/png', 'image/jpeg', 'image/webp'])
+const ARCHIVE_PAGE_SIZE = 12
 
 function createStore() {
   const { SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY } = process.env
@@ -23,15 +24,57 @@ function createStore() {
 }
 
 export function registerArchiveRoute(app) {
-  app.get('/api/archive', async (_req, res) => {
+  app.get('/api/archive/uploaders', async (_req, res) => {
     try {
       const { data, error } = await createStore()
         .from('archive_issues')
-        .select('id, username, date, subtext, image_url, uploader_discord_id, uploader_username, uploader_avatar_url')
-        .order('date', { ascending: false })
-        .order('created_at', { ascending: false })
+        .select('uploader_discord_id, uploader_username')
+        .not('uploader_discord_id', 'is', null)
       if (error) throw error
-      res.json(data)
+      const uploaders = new Map()
+      for (const row of data) {
+        uploaders.set(row.uploader_discord_id, {
+          id: row.uploader_discord_id,
+          username: row.uploader_username || 'Discord user',
+        })
+      }
+      res.json([...uploaders.values()].sort((a, b) => a.username.localeCompare(b.username)))
+    } catch (error) {
+      console.error('Could not load archive uploaders:', error.message)
+      res.status(503).json({ error: 'Archive uploaders are unavailable' })
+    }
+  })
+
+  app.get('/api/archive', async (req, res) => {
+    const page = Number(req.query.page ?? 1)
+    const sort = req.query.sort ?? 'newest'
+    const uploaderId = req.query.uploader ?? ''
+    const offset = (page - 1) * ARCHIVE_PAGE_SIZE
+    if (!Number.isSafeInteger(page) || page < 1 || !Number.isSafeInteger(offset)) {
+      return res.status(400).json({ error: 'Page must be a positive integer' })
+    }
+    if (sort !== 'newest' && sort !== 'oldest') {
+      return res.status(400).json({ error: 'Sort must be newest or oldest' })
+    }
+    if (typeof uploaderId !== 'string' || (uploaderId && !/^\d+$/.test(uploaderId))) {
+      return res.status(400).json({ error: 'Uploader must be a Discord user ID' })
+    }
+
+    try {
+      let query = createStore()
+        .from('archive_issues')
+        .select('id, username, date, subtext, image_url, uploader_discord_id, uploader_username, uploader_avatar_url')
+      if (uploaderId) query = query.eq('uploader_discord_id', uploaderId)
+
+      const { data, error } = await query
+        .order('date', { ascending: sort === 'oldest' })
+        .order('created_at', { ascending: sort === 'oldest' })
+        .range(offset, offset + ARCHIVE_PAGE_SIZE)
+      if (error) throw error
+      res.json({
+        items: data.slice(0, ARCHIVE_PAGE_SIZE),
+        hasMore: data.length > ARCHIVE_PAGE_SIZE,
+      })
     } catch (error) {
       console.error('Could not load archive:', error.message)
       res.status(503).json({ error: 'Archive is unavailable' })
@@ -63,14 +106,16 @@ async function fetchImage(attachment) {
     throw new Error('Use a PNG, JPEG, or WebP image.')
   }
   if (!isAllowedImageSize(attachment.size)) {
-    throw new Error('The image must be 8 MiB or smaller.')
+    throw new Error('The image must be 2 MB or smaller; under 1 MB is recommended.')
   }
 
   const response = await fetch(attachment.url, { signal: AbortSignal.timeout(15_000) })
   if (!response.ok) throw new Error(`Discord image download failed (${response.status}).`)
 
   const bytes = Buffer.from(await response.arrayBuffer())
-  if (!isAllowedImageSize(bytes.length)) throw new Error('The image must be 8 MiB or smaller.')
+  if (!isAllowedImageSize(bytes.length)) {
+    throw new Error('The image must be 2 MB or smaller; under 1 MB is recommended.')
+  }
 
   const format = getImageFormat(bytes)
   if (!format || format.contentType !== attachment.contentType) {

@@ -1,14 +1,10 @@
 import { useEffect, useRef, useState } from 'react'
-import Chips from '../components/Chips.jsx'
 import ImageCarousel from '../components/ImageCarousel.jsx'
 import Panel from '../components/Panel.jsx'
 
 const API = import.meta.env.VITE_API_BASE ?? ''
-
-const SORTS = [
-  { id: 'newest', label: 'Newest first' },
-  { id: 'oldest', label: 'Oldest first' },
-]
+const INITIAL_VISIBLE_COUNT = 3
+const VISIBLE_INCREMENT = 3
 
 function formatArchiveDate(value) {
   const [year, month, day] = value.split('-')
@@ -55,7 +51,13 @@ function ArchiveAttribution({ issue, showSubtext = false }) {
 }
 
 export default function Archive() {
-  const [order, setOrder] = useState('newest')
+  const [sort, setSort] = useState('newest')
+  const [uploaderId, setUploaderId] = useState('')
+  const [uploaders, setUploaders] = useState([])
+  const [uploadersLoadState, setUploadersLoadState] = useState('loading')
+  const [page, setPage] = useState(1)
+  const [visibleCount, setVisibleCount] = useState(INITIAL_VISIBLE_COUNT)
+  const [hasMore, setHasMore] = useState(false)
   const [viewerIndex, setViewerIndex] = useState(null)
   const [issues, setIssues] = useState([])
   const [loadState, setLoadState] = useState('loading')
@@ -64,14 +66,40 @@ export default function Archive() {
   useEffect(() => {
     const controller = new AbortController()
 
-    fetch(`${API}/api/archive`, { signal: controller.signal })
+    fetch(`${API}/api/archive/uploaders`, { signal: controller.signal })
+      .then((response) => {
+        if (!response.ok) throw new Error('Uploader list is unavailable.')
+        return response.json()
+      })
+      .then((data) => {
+        if (!Array.isArray(data)) throw new Error('Uploader list is invalid.')
+        setUploaders(data)
+        setUploadersLoadState('loaded')
+      })
+      .catch((error) => {
+        if (error.name !== 'AbortError') setUploadersLoadState('error')
+      })
+
+    return () => controller.abort()
+  }, [])
+
+  useEffect(() => {
+    const controller = new AbortController()
+    const params = new URLSearchParams({ page: String(page), sort })
+    if (uploaderId) params.set('uploader', uploaderId)
+
+    fetch(`${API}/api/archive?${params}`, { signal: controller.signal })
       .then((response) => {
         if (!response.ok) throw new Error('Archive is unavailable.')
         return response.json()
       })
       .then((data) => {
-        if (!Array.isArray(data)) throw new Error('Archive response is invalid.')
-        setIssues(data)
+        if (!data || !Array.isArray(data.items) || typeof data.hasMore !== 'boolean') {
+          throw new Error('Archive response is invalid.')
+        }
+        setIssues(data.items)
+        setHasMore(data.hasMore)
+        setVisibleCount(INITIAL_VISIBLE_COUNT)
         setLoadState('loaded')
       })
       .catch((error) => {
@@ -79,12 +107,12 @@ export default function Archive() {
       })
 
     return () => controller.abort()
-  }, [])
+  }, [page, sort, uploaderId])
 
-  const sorted = [...issues].sort((a, b) =>
-    order === 'newest' ? b.date.localeCompare(a.date) : a.date.localeCompare(b.date),
-  )
-  const slides = sorted.map((issue) => ({
+  const visibleIssues = issues.slice(0, visibleCount)
+  const canLoadMore = visibleCount < issues.length
+  const canLoadNextPage = !canLoadMore && hasMore
+  const slides = issues.map((issue) => ({
     id: issue.id,
     title: issue.username,
     caption: <ArchiveAttribution issue={issue} showSubtext />,
@@ -102,33 +130,101 @@ export default function Archive() {
     setViewerIndex(index)
   }
 
+  const changeSort = (event) => {
+    setLoadState('loading')
+    setSort(event.target.value)
+    setPage(1)
+  }
+
+  const changeUploader = (event) => {
+    setLoadState('loading')
+    setUploaderId(event.target.value)
+    setPage(1)
+  }
+
+  const changePage = (nextPage) => {
+    setLoadState('loading')
+    setPage(nextPage)
+  }
+
   return (
     <>
       <Panel tone="yellow" sprite="furret" className="page-head">
         <h1>Newspaper archive</h1>
         <p>Newspaper entries shared by Cobblemon members.</p>
-        <Chips label="Sort:" options={SORTS} value={order} onChange={setOrder} />
       </Panel>
 
       <Panel sprite="mudkip" count={3}>
-        <div className="inset grid grid-archive">
-          {loadState === 'loading' && <p role="status">Loading archive...</p>}
-          {loadState === 'error' && <p role="alert">Could not load the archive. Please try again later.</p>}
-          {loadState === 'loaded' && sorted.length === 0 && <p>No archive entries yet.</p>}
-          {loadState === 'loaded' && sorted.map((i, index) => (
-            <article key={i.id} className="card">
+        <div className="inset archive-inset">
+          <div className="archive-filters">
+            <label className="archive-filter" htmlFor="archive-uploader">
+              <span>Uploaded by</span>
+              <select
+                id="archive-uploader"
+                value={uploaderId}
+                onChange={changeUploader}
+                disabled={uploadersLoadState !== 'loaded'}
+              >
+                <option value="">All uploaders</option>
+                {uploaders.map((uploader) => (
+                  <option key={uploader.id} value={uploader.id}>{uploader.username}</option>
+                ))}
+              </select>
+            </label>
+            <label className="archive-filter" htmlFor="archive-date">
+              <span>Date</span>
+              <select id="archive-date" value={sort} onChange={changeSort}>
+                <option value="newest">Newest first</option>
+                <option value="oldest">Oldest first</option>
+              </select>
+            </label>
+          </div>
+          {uploadersLoadState === 'error' && (
+            <p role="alert">Could not load the uploader filter. Please try again later.</p>
+          )}
+          <div className="grid grid-archive">
+            {loadState === 'loading' && <p role="status">Loading archive...</p>}
+            {loadState === 'error' && <p role="alert">Could not load the archive. Please try again later.</p>}
+            {loadState === 'loaded' && issues.length === 0 && <p>No archive entries found.</p>}
+            {loadState === 'loaded' && visibleIssues.map((i, index) => (
+              <article key={i.id} className="card">
+                <button
+                  type="button"
+                  className="image-trigger"
+                  aria-label={`Enlarge ${i.username}'s newspaper`}
+                  onClick={(event) => openImage(event, index)}
+                >
+                  <img className="newspaper" src={i.image_url} alt="" loading="lazy" decoding="async" />
+                </button>
+                <ArchiveAttribution issue={i} />
+              </article>
+            ))}
+          </div>
+        </div>
+        {loadState === 'loaded' && issues.length > 0 && (
+          <nav className="archive-pagination" aria-label="Archive pagination">
+            {page > 1 && (
+              <button type="button" className="btn" onClick={() => changePage(page - 1)}>
+                Previous page
+              </button>
+            )}
+            {canLoadMore && (
               <button
                 type="button"
-                className="image-trigger"
-                aria-label={`Enlarge ${i.username}'s newspaper`}
-                onClick={(event) => openImage(event, index)}
+                className="btn"
+                onClick={() => setVisibleCount((count) => Math.min(count + VISIBLE_INCREMENT, issues.length))}
               >
-                <img className="newspaper" src={i.image_url} alt="" />
+                Load more
               </button>
-              <ArchiveAttribution issue={i} />
-            </article>
-          ))}
-        </div>
+            )}
+            {canLoadNextPage && (
+              <button type="button" className="btn" onClick={() => changePage(page + 1)}>
+                Next page
+              </button>
+            )}
+            {(page > 1 || canLoadNextPage) && <span>Page {page}</span>}
+          </nav>
+        )}
       </Panel>
 
       {viewerIndex !== null && (
