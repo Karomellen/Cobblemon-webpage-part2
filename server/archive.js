@@ -7,7 +7,7 @@ import {
   GatewayIntentBits,
   Partials,
 } from 'discord.js'
-import { getImageFormat, isAllowedImageSize, isValidArchiveDate } from './archive-utils.js'
+import { getImageFormat, isAllowedImageSize, parseArchiveDate } from './archive-utils.js'
 
 const BUCKET = 'archive-images'
 const ALLOWED_IMAGE_TYPES = new Set(['image/png', 'image/jpeg', 'image/webp'])
@@ -132,11 +132,12 @@ export async function startArchiveBot() {
       }
 
       const username = interaction.options.getString('username', true).trim()
-      const date = interaction.options.getString('date', true)
+      const dateInput = interaction.options.getString('date', true)
+      const date = parseArchiveDate(dateInput)
       const subtext = interaction.options.getString('subtext', true).trim()
       const attachment = interaction.options.getAttachment('image', true)
       if (!username || username.length > 50) throw new Error('Username must be 1-50 characters.')
-      if (!isValidArchiveDate(date)) throw new Error('Date must be a valid date in YYYY-MM-DD format.')
+      if (!date) throw new Error('Date must be a valid date in DD/MM/YYYY format.')
       if (!subtext || subtext.length > 500) throw new Error('Subtext must be 1–500 characters.')
 
       const { bytes, format } = await fetchImage(attachment)
@@ -156,7 +157,7 @@ export async function startArchiveBot() {
               .setTitle(username)
               .setDescription(subtext)
               .setImage(imageUrl)
-              .setFooter({ text: date }),
+              .setFooter({ text: dateInput }),
           ],
         })
 

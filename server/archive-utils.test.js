@@ -1,11 +1,12 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { getImageFormat, isAllowedImageSize, isValidArchiveDate } from './archive-utils.js'
+import { getImageFormat, isAllowedImageSize, parseArchiveDate } from './archive-utils.js'
 
-test('accepts real calendar dates and rejects malformed dates', () => {
-  assert.equal(isValidArchiveDate('2024-02-29'), true)
-  assert.equal(isValidArchiveDate('2025-02-29'), false)
-  assert.equal(isValidArchiveDate('2025-2-09'), false)
+test('parses valid DD/MM/YYYY dates and rejects malformed dates', () => {
+  assert.equal(parseArchiveDate('29/02/2024'), '2024-02-29')
+  assert.equal(parseArchiveDate('29/02/2025'), null)
+  assert.equal(parseArchiveDate('9/02/2025'), null)
+  assert.equal(parseArchiveDate('31/04/2025'), null)
 })
 
 test('recognizes only supported image signatures', () => {

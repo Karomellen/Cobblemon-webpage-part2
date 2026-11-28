@@ -4,10 +4,14 @@ export function isAllowedImageSize(size) {
   return Number.isSafeInteger(size) && size >= 0 && size <= MAX_IMAGE_BYTES
 }
 
-export function isValidArchiveDate(value) {
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return false
-  const date = new Date(`${value}T00:00:00.000Z`)
-  return !Number.isNaN(date.valueOf()) && date.toISOString().startsWith(value)
+export function parseArchiveDate(value) {
+  const match = /^(\d{2})\/(\d{2})\/(\d{4})$/.exec(value)
+  if (!match) return null
+
+  const [, day, month, year] = match
+  const isoDate = `${year}-${month}-${day}`
+  const date = new Date(`${isoDate}T00:00:00.000Z`)
+  return !Number.isNaN(date.valueOf()) && date.toISOString().startsWith(isoDate) ? isoDate : null
 }
 
 export function getImageFormat(bytes) {
