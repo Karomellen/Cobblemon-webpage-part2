@@ -219,7 +219,7 @@ export default function Archive() {
             {loadState === 'loading' && (
               <div className="archive-loading-indicator" role="status" aria-live="polite">
                 <img src="/CAL_sprites/mew_LOADING.gif" alt="" />
-                <span>Please hold, Mew is fetching stuff :3</span>
+                <span>Please hold, Mew is fetching some stuff :3</span>
               </div>
             )}
             {loadState === 'error' && <p role="alert">Could not load the archive. Please try again later.</p>}
