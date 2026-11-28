@@ -27,7 +27,7 @@ export function registerArchiveRoute(app) {
     try {
       const { data, error } = await createStore()
         .from('archive_issues')
-        .select('id, username, date, subtext, image_url')
+        .select('id, username, date, subtext, image_url, uploader_discord_id, uploader_username')
         .order('date', { ascending: false })
         .order('created_at', { ascending: false })
       if (error) throw error
@@ -167,6 +167,8 @@ export async function startArchiveBot() {
           date,
           subtext,
           image_url: imageUrl,
+          uploader_discord_id: interaction.user.id,
+          uploader_username: member.displayName,
           storage_path: storagePath,
           discord_message_id: post.id,
         })

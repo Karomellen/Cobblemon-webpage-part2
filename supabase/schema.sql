@@ -9,6 +9,10 @@ create table if not exists public.archive_issues (
   created_at timestamptz not null default now()
 );
 
+alter table public.archive_issues
+  add column if not exists uploader_discord_id text,
+  add column if not exists uploader_username text;
+
 alter table public.archive_issues enable row level security;
 
 grant usage on schema public to service_role;

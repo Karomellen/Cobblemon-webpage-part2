@@ -83,6 +83,18 @@ export default function Archive() {
               </button>
               <h3>{i.username}</h3>
               <p className="muted">{i.date}</p>
+              {i.uploader_discord_id && (
+                <p className="muted">
+                  Uploaded by{' '}
+                  <a
+                    href={`https://discord.com/users/${encodeURIComponent(i.uploader_discord_id)}`}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    {i.uploader_username || 'Discord user'}
+                  </a>
+                </p>
+              )}
               <p>{i.subtext}</p>
             </article>
           ))}
