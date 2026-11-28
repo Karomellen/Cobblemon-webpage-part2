@@ -19,7 +19,7 @@ npm run dev
 
 Copy `.env.example` to `.env` and fill in the server settings. Apply `supabase/schema.sql` in the Supabase SQL editor. Keep the Supabase service role key and Discord bot token private.
 
-Register `/archive` with `npm run register:commands`, then invite the bot with the `bot` and `applications.commands` scopes. It needs permission to view and send messages and embed links in the archive channel. Only the configured Cobblemon role can upload; new entries show the uploader's Discord server name linked to their profile. Deleting the bot's archive post removes its entry and image.
+Register `/archive` with `npm run register:commands`, then invite the bot with the `bot` and `applications.commands` scopes. It needs permission to view and send messages and embed links in the archive channel. Only the configured Cobblemon role can upload; the uploader's Discord server name and current UTC date are assigned automatically, and the name links to their profile. The only required inputs are subtext and image. Deleting the bot's archive post removes its entry and image.
 
 ## Deploy
 

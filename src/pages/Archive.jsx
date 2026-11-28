@@ -10,6 +10,11 @@ const SORTS = [
   { id: 'oldest', label: 'Oldest first' },
 ]
 
+function formatArchiveDate(value) {
+  const [year, month, day] = value.split('-')
+  return `${day}/${month}/${year}`
+}
+
 export default function Archive() {
   const [order, setOrder] = useState('newest')
   const [viewerIndex, setViewerIndex] = useState(null)
@@ -43,7 +48,7 @@ export default function Archive() {
   const slides = sorted.map((issue) => ({
     id: issue.id,
     title: issue.username,
-    description: `${issue.date} - ${issue.subtext}`,
+    description: `${formatArchiveDate(issue.date)} - ${issue.subtext}`,
     src: issue.image_url,
     alt: `${issue.username}'s newspaper`,
     aspectRatio: '3 / 4',
@@ -82,7 +87,7 @@ export default function Archive() {
                 <img className="newspaper" src={i.image_url} alt="" />
               </button>
               <h3>{i.username}</h3>
-              <p className="muted">{i.date}</p>
+              <p className="muted">{formatArchiveDate(i.date)}</p>
               {i.uploader_discord_id && (
                 <p className="muted">
                   Uploaded by{' '}

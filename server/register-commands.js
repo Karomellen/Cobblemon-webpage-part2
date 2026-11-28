@@ -10,12 +10,6 @@ const command = new SlashCommandBuilder()
   .setName('archive')
   .setDescription('Add an image to the newspaper archive')
   .addStringOption((option) =>
-    option.setName('username').setDescription('Name shown on the archive entry').setRequired(true),
-  )
-  .addStringOption((option) =>
-    option.setName('date').setDescription('Date in DD/MM/YYYY format').setRequired(true),
-  )
-  .addStringOption((option) =>
     option.setName('subtext').setDescription('Short description').setRequired(true),
   )
   .addAttachmentOption((option) =>

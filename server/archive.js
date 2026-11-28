@@ -7,7 +7,7 @@ import {
   GatewayIntentBits,
   Partials,
 } from 'discord.js'
-import { getImageFormat, isAllowedImageSize, parseArchiveDate } from './archive-utils.js'
+import { formatArchiveDate, getImageFormat, isAllowedImageSize } from './archive-utils.js'
 
 const BUCKET = 'archive-images'
 const ALLOWED_IMAGE_TYPES = new Set(['image/png', 'image/jpeg', 'image/webp'])
@@ -131,13 +131,11 @@ export async function startArchiveBot() {
         throw new Error('You need the Cobblemon role to upload archive entries.')
       }
 
-      const username = interaction.options.getString('username', true).trim()
-      const dateInput = interaction.options.getString('date', true)
-      const date = parseArchiveDate(dateInput)
+      const username = member.displayName
+      const date = interaction.createdAt.toISOString().slice(0, 10)
       const subtext = interaction.options.getString('subtext', true).trim()
       const attachment = interaction.options.getAttachment('image', true)
       if (!username || username.length > 50) throw new Error('Username must be 1-50 characters.')
-      if (!date) throw new Error('Date must be a valid date in DD/MM/YYYY format.')
       if (!subtext || subtext.length > 500) throw new Error('Subtext must be 1–500 characters.')
 
       const { bytes, format } = await fetchImage(attachment)
@@ -157,7 +155,7 @@ export async function startArchiveBot() {
               .setTitle(username)
               .setDescription(subtext)
               .setImage(imageUrl)
-              .setFooter({ text: dateInput }),
+              .setFooter({ text: formatArchiveDate(date) }),
           ],
         })
 
