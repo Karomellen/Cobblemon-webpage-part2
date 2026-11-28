@@ -11,7 +11,8 @@ create table if not exists public.archive_issues (
 
 alter table public.archive_issues
   add column if not exists uploader_discord_id text,
-  add column if not exists uploader_username text;
+  add column if not exists uploader_username text,
+  add column if not exists uploader_avatar_url text;
 
 alter table public.archive_issues enable row level security;
 

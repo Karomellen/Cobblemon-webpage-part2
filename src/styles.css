@@ -348,6 +348,12 @@ img[src$="sprigatito.webp"] { scale: 2.1; }
   border-radius: 50%;
   object-fit: cover;
 }
+.archive-uploader {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 10px 0;
+}
 .calendar-avatar-placeholder {
   position: relative;
   display: block;

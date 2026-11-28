@@ -89,16 +89,32 @@ export default function Archive() {
               <h3>{i.username}</h3>
               <p className="muted">{formatArchiveDate(i.date)}</p>
               {i.uploader_discord_id && (
-                <p className="muted">
-                  Uploaded by{' '}
-                  <a
-                    href={`https://discord.com/users/${encodeURIComponent(i.uploader_discord_id)}`}
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    {i.uploader_username || 'Discord user'}
-                  </a>
-                </p>
+                <div className="archive-uploader">
+                  {i.uploader_avatar_url ? (
+                    <img
+                      className="calendar-avatar"
+                      src={i.uploader_avatar_url}
+                      alt={`${i.uploader_username || 'Discord user'}'s profile`}
+                      loading="lazy"
+                    />
+                  ) : (
+                    <span
+                      className="calendar-avatar calendar-avatar-placeholder"
+                      role="img"
+                      aria-label={`Discord profile picture placeholder for ${i.uploader_username || 'uploader'}`}
+                    />
+                  )}
+                  <p className="muted">
+                    Uploaded by{' '}
+                    <a
+                      href={`https://discord.com/users/${encodeURIComponent(i.uploader_discord_id)}`}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      {i.uploader_username || 'Discord user'}
+                    </a>
+                  </p>
+                </div>
               )}
               <p>{i.subtext}</p>
             </article>
