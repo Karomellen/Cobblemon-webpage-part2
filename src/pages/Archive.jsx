@@ -15,6 +15,45 @@ function formatArchiveDate(value) {
   return `${day}/${month}/${year}`
 }
 
+function ArchiveAttribution({ issue, showSubtext = false }) {
+  const uploaderName = issue.uploader_username || 'Discord user'
+
+  return (
+    <>
+      <p className="muted">{formatArchiveDate(issue.date)}</p>
+      {issue.uploader_discord_id && (
+        <div className="archive-uploader">
+          {issue.uploader_avatar_url ? (
+            <img
+              className="calendar-avatar"
+              src={issue.uploader_avatar_url}
+              alt={`${uploaderName}'s profile`}
+              loading="lazy"
+            />
+          ) : (
+            <span
+              className="calendar-avatar calendar-avatar-placeholder"
+              role="img"
+              aria-label={`Discord profile picture placeholder for ${uploaderName}`}
+            />
+          )}
+          <p className="muted">
+            Uploaded by{' '}
+            <a
+              href={`https://discord.com/users/${encodeURIComponent(issue.uploader_discord_id)}`}
+              target="_blank"
+              rel="noreferrer"
+            >
+              {uploaderName}
+            </a>
+          </p>
+        </div>
+      )}
+      {showSubtext && <span>{issue.subtext}</span>}
+    </>
+  )
+}
+
 export default function Archive() {
   const [order, setOrder] = useState('newest')
   const [viewerIndex, setViewerIndex] = useState(null)
@@ -48,7 +87,7 @@ export default function Archive() {
   const slides = sorted.map((issue) => ({
     id: issue.id,
     title: issue.username,
-    description: `${formatArchiveDate(issue.date)} - ${issue.subtext}`,
+    caption: <ArchiveAttribution issue={issue} showSubtext />,
     src: issue.image_url,
     alt: `${issue.username}'s newspaper`,
     aspectRatio: '3 / 4',
@@ -86,37 +125,7 @@ export default function Archive() {
               >
                 <img className="newspaper" src={i.image_url} alt="" />
               </button>
-              <h3>{i.username}</h3>
-              <p className="muted">{formatArchiveDate(i.date)}</p>
-              {i.uploader_discord_id && (
-                <div className="archive-uploader">
-                  {i.uploader_avatar_url ? (
-                    <img
-                      className="calendar-avatar"
-                      src={i.uploader_avatar_url}
-                      alt={`${i.uploader_username || 'Discord user'}'s profile`}
-                      loading="lazy"
-                    />
-                  ) : (
-                    <span
-                      className="calendar-avatar calendar-avatar-placeholder"
-                      role="img"
-                      aria-label={`Discord profile picture placeholder for ${i.uploader_username || 'uploader'}`}
-                    />
-                  )}
-                  <p className="muted">
-                    Uploaded by{' '}
-                    <a
-                      href={`https://discord.com/users/${encodeURIComponent(i.uploader_discord_id)}`}
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      {i.uploader_username || 'Discord user'}
-                    </a>
-                  </p>
-                </div>
-              )}
-              <p>{i.subtext}</p>
+              <ArchiveAttribution issue={i} />
             </article>
           ))}
         </div>

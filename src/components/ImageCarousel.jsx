@@ -85,8 +85,12 @@ export default function ImageCarousel({ slides, initialIndex, onClose, variant =
             </div>
           )}
           <figcaption className="lightbox-caption">
-            <strong>{slide.title}</strong>
-            {slide.description && <span>{slide.description}</span>}
+            {slide.caption ?? (
+              <>
+                {slide.title && <strong>{slide.title}</strong>}
+                {slide.description && <span>{slide.description}</span>}
+              </>
+            )}
           </figcaption>
         </figure>
         <button
