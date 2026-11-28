@@ -25,7 +25,7 @@ values (
   'archive-images',
   'archive-images',
   true,
-  2000000,
+  4000000,
   array['image/png', 'image/jpeg', 'image/webp']
 )
 on conflict (id) do update set

@@ -13,7 +13,7 @@ const command = new SlashCommandBuilder()
     option.setName('subtext').setDescription('Short description').setRequired(true),
   )
   .addAttachmentOption((option) =>
-    option.setName('image').setDescription('PNG, JPEG, or WebP up to 2 MB; under 1 MB recommended').setRequired(true),
+    option.setName('image').setDescription('PNG, JPEG, or WebP up to 4 MB; under 1 MB recommended').setRequired(true),
   )
 
 const rest = new REST({ version: '10' }).setToken(DISCORD_BOT_TOKEN)

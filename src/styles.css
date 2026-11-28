@@ -659,10 +659,13 @@ img[src$="sprigatito.webp"] { scale: 2.1; }
   font-family: var(--display);
   font-size: 14px;
 }
-.archive-image-viewer .lightbox-placeholder { width: min(100%, 400px); max-height: calc(70vh - 120px); }
+.archive-image-viewer .lightbox-placeholder { width: min(100%, 400px); max-height: max(100px, calc(70vh - 220px)); }
 .archive-image-viewer .lightbox-image { max-width: min(100%, 600px); max-height: calc(70vh - 120px); }
 .lightbox-caption { display: flex; flex-direction: column; gap: 4px; overflow-wrap: anywhere; font-family: var(--display); font-size: 14px; }
 .lightbox-caption span { color: var(--muted); font-family: var(--body); font-size: 13px; }
+.archive-image-viewer .lightbox-figure { justify-content: flex-start; overflow-y: auto; }
+.archive-image-viewer .lightbox-image { max-height: max(100px, calc(70vh - 220px)); }
+.archive-image-viewer .lightbox-caption { flex: 0 0 auto; width: 100%; padding: 0 4px 4px; }
 .lightbox-close,
 .lightbox-arrow {
   display: grid;
@@ -743,6 +746,7 @@ img[src$="sprigatito.webp"] { scale: 2.1; }
   .lightbox-arrow { width: 34px; height: 34px; font-size: 13px; }
   .lightbox-image { max-height: calc(82vh - 150px); }
   .lightbox-placeholder { max-height: calc(82vh - 150px); }
+  .archive-image-viewer .lightbox-image { max-height: max(100px, calc(70vh - 220px)); }
   .lightbox-caption { font-size: 12px; }
   .recap-body { gap: 8px; }
   .quote { padding: 14px 12px; }

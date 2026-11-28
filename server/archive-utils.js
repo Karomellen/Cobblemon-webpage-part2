@@ -1,4 +1,4 @@
-export const MAX_IMAGE_BYTES = 2_000_000
+export const MAX_IMAGE_BYTES = 4_000_000
 
 export function isAllowedImageSize(size) {
   return Number.isSafeInteger(size) && size >= 0 && size <= MAX_IMAGE_BYTES

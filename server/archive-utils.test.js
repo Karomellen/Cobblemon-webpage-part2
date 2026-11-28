@@ -13,9 +13,9 @@ test('recognizes only supported image signatures', () => {
   assert.equal(getImageFormat(Buffer.from('not an image')), null)
 })
 
-test('allows images up to 2 MB', () => {
+test('allows images up to 4 MB', () => {
   assert.equal(isAllowedImageSize(1_000_000), true)
-  assert.equal(isAllowedImageSize(2_000_000), true)
-  assert.equal(isAllowedImageSize(2_000_001), false)
+  assert.equal(isAllowedImageSize(4_000_000), true)
+  assert.equal(isAllowedImageSize(4_000_001), false)
   assert.equal(isAllowedImageSize(-1), false)
 })

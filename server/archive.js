@@ -106,7 +106,7 @@ async function fetchImage(attachment) {
     throw new Error('Use a PNG, JPEG, or WebP image.')
   }
   if (!isAllowedImageSize(attachment.size)) {
-    throw new Error('The image must be 2 MB or smaller; under 1 MB is recommended.')
+    throw new Error('The image must be 4 MB or smaller; under 1 MB is recommended.')
   }
 
   const response = await fetch(attachment.url, { signal: AbortSignal.timeout(15_000) })
@@ -114,7 +114,7 @@ async function fetchImage(attachment) {
 
   const bytes = Buffer.from(await response.arrayBuffer())
   if (!isAllowedImageSize(bytes.length)) {
-    throw new Error('The image must be 2 MB or smaller; under 1 MB is recommended.')
+    throw new Error('The image must be 4 MB or smaller; under 1 MB is recommended.')
   }
 
   const format = getImageFormat(bytes)
