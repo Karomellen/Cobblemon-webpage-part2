@@ -35,7 +35,6 @@ function Recap() {
   const [step, setStep] = useState(0)
   const [today, setToday] = useState(() => new Date())
   const [discordAvatars, setDiscordAvatars] = useState({})
-  const [isLoadingAvatars, setIsLoadingAvatars] = useState(true)
   const [openedDays, setOpenedDays] = useState(() => new Set(
     CHRISTMAS_CALENDAR
       .filter(({ day }) => window.localStorage.getItem(`${OPENED_DAY_STORAGE_PREFIX}${day}`) === 'true')
@@ -57,9 +56,6 @@ function Recap() {
       })
       .catch((error) => {
         if (error.name !== 'AbortError') console.error('Could not load calendar avatars:', error.message)
-      })
-      .finally(() => {
-        if (!controller.signal.aborted) setIsLoadingAvatars(false)
       })
 
     return () => controller.abort()
@@ -118,12 +114,6 @@ function Recap() {
 
       <h2>Christmas Calendar</h2>
       <p>One new celebration appears each day in December.</p>
-      {isLoadingAvatars && (
-        <div className="calendar-loading" role="status" aria-live="polite">
-          <img src="/CAL_sprites/mew_LOADING.gif" alt="" />
-          <span>Please hold, fetching some data :3</span>
-        </div>
-      )}
       <div className="recap-body">
         <button
           className="round-btn"

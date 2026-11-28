@@ -217,7 +217,7 @@ export default function Archive() {
           )}
           <div className="grid grid-archive">
             {loadState === 'loading' && (
-              <div className="calendar-loading archive-loading" role="status" aria-live="polite">
+              <div className="archive-loading-indicator" role="status" aria-live="polite">
                 <img src="/CAL_sprites/mew_LOADING.gif" alt="" />
                 <span>Please hold, fetching some data :3</span>
               </div>
